@@ -1,26 +1,41 @@
 #!/bin/bash
+set -e
 
-echo "Started deployment..."
-yarn=/usr/local/bin/yarn
+echo "===== Started deployment ====="
+
+YARN="/usr/local/bin/yarn"
 
 SRC="/home/lab/ErdeFlix"
 DST="/var/www/ErdeFlix"
 
-# copy project
-rsync -av --delete "$SRC"/ "$DST"/
+echo "Syncing files..."
+rsync -av --delete "$SRC/" "$DST/"
 
 cd "$DST"
 
-# laravel commands
-$yarn build
+echo "Installing dependencies..."
+$YARN install --frozen-lockfile
+
+echo "Building frontend..."
+$YARN build
+
+echo "Laravel optimization..."
 php artisan optimize:clear
-php artisan storage:link
 php artisan migrate --force
+
+# storage:link байхгүй бол л үүсгэнэ
+if [ ! -L public/storage ]; then
+    php artisan storage:link
+fi
+
 php artisan optimize
 
-# permissions
+echo "Setting permissions..."
 chown -R www-data:www-data "$DST"
-chmod -R 775 "$DST/storage"
-chmod -R 775 "$DST/bootstrap/cache"
+find storage -type d -exec chmod 775 {} \;
+find storage -type f -exec chmod 664 {} \;
 
-echo "Done."
+find bootstrap/cache -type d -exec chmod 775 {} \;
+find bootstrap/cache -type f -exec chmod 664 {} \;
+
+echo "===== Deployment completed ====="
