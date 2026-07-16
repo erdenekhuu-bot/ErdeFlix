@@ -45,3 +45,6 @@ find bootstrap/cache -type d -exec chmod 775 {} \;
 find bootstrap/cache -type f -exec chmod 664 {} \;
 
 echo "===== Deployment completed ====="
+
+
+#pm2 start cloudflared --name "erdeflix-tunnel" -- tunnel --url http://192.168.1.50:8000
