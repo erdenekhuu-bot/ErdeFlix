@@ -2,9 +2,20 @@ import { usePage } from '@inertiajs/react';
 import { Flex, Button, Image, Row, Col } from 'antd';
 import { FeaturedCard } from '@/components/card/FeaturedCard';
 import HomeLayout from '@/layouts/home-layout';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper.css';
 
 export default function Welcome() {
-    const { banner, feature1 } = usePage().props;
+    const { banner, records } = usePage<{
+        banner: string;
+        records: {
+            title: string;
+            description: string;
+            image: string;
+            kind: string;
+            date: string;
+        }[];
+    }>().props;
 
     return (
         <HomeLayout title="Home">
@@ -37,18 +48,40 @@ export default function Welcome() {
                     </Flex>
                 </div>
             </section>
-            <section className={''}>Down Here</section>
+            <section className={''}>
+                {records.length > 0 && (
+                    <Swiper spaceBetween={20} slidesPerView={4}>
+                        {records.map((item, index) => (
+                            <SwiperSlide key={index}>
+                                <FeaturedCard
+                                    key={index}
+                                    image={item.image}
+                                    title={item.title}
+                                    description={item.description}
+                                    kind={item.kind}
+                                    date={item.date}
+                                />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                )}
+            </section>
             <section className={'p-8'}>
                 <Row gutter={[32, 32]}>
                     <Col span={12}>
-                        <FeaturedCard
-                            title={'Interstellar Exodus'}
-                            description={''}
-                            image={String(feature1)}
-                            tag={"'Interstellar Exodus"}
-                        />
+                        <div className="relative h-[25rem] overflow-hidden">
+                            <Image
+                                preview={false}
+                                src={records[0].image}
+                                alt=""
+                                className="!h-full !w-full !object-cover"
+                            />
+                        </div>
                     </Col>
-                    <Col span={12}>2</Col>
+                    <Col span={12}>
+                        <Row>1</Row>
+                        <Row>2</Row>
+                    </Col>
                 </Row>
             </section>
         </HomeLayout>
