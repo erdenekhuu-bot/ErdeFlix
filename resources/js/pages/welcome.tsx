@@ -84,7 +84,7 @@ export default function Welcome() {
         >
             <Layout className="scrollbar min-h-screen">
                 <Head title="Welcome" />
-                <Layout.Header>
+                <Layout.Header className={'!fixed !z-20 !w-full'}>
                     <Flex className="!w-full" align="center" gap={24}>
                         <Typography.Title className="!mb-0 !tracking-wider whitespace-nowrap !text-[#E50914]">
                             ERDEFLIX
@@ -125,13 +125,16 @@ export default function Welcome() {
                     </Flex>
                 </Layout.Header>
                 <Layout.Content>
-                    <section style={{ height: 'calc(100dvh)' }}>
+                    <section  style={{ height: "calc(100dvh)",overflow: 'hidden' }}>
                         <Image
                             preview={false}
                             src={String(banner)}
                             alt=""
-                            className=""
+                            className={'object-center'}
                         />
+                    </section>
+                    <section>
+                        Down Here
                     </section>
                 </Layout.Content>
             </Layout>

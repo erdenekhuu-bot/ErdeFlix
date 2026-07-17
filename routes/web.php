@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome',[
-    'banner'=>asset('asset/banner.png')
+    'banner'=>asset('asset/screen.png')
 ])->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
