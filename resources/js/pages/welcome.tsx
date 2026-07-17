@@ -1,13 +1,14 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Layout,Flex,Menu, Typography,Input,ConfigProvider,theme,Button,Image } from 'antd';
+import { Layout,Flex,Menu, Typography,Input,ConfigProvider,theme,Button,Image,Row,Col } from 'antd';
 import type { MenuProps } from 'antd';
 import {useState} from 'react';
 import { dashboard, login } from '@/routes';
 import { register } from '@/routes';
+import {FeaturedCard} from '@/components/card/FeaturedCard';
 
 type MenuItem = Required<MenuProps>['items'][number];
 export default function Welcome() {
-    const { auth,banner } = usePage().props;
+    const { auth, banner, feature1 } = usePage().props;
     const [current, setCurrent] = useState('mail');
 
     const items: MenuItem[] = [
@@ -125,7 +126,9 @@ export default function Welcome() {
                     </Flex>
                 </Layout.Header>
                 <Layout.Content>
-                    <section  style={{ height: "calc(100dvh)",overflow: 'hidden' }}>
+                    <section
+                        style={{ height: 'calc(100dvh)', overflow: 'hidden' }}
+                    >
                         <Image
                             preview={false}
                             src={String(banner)}
@@ -133,10 +136,62 @@ export default function Welcome() {
                             className={'object-center'}
                         />
                     </section>
-                    <section>
-                        Down Here
+                    <section className={''}>Down Here</section>
+                    <section className={'p-8'}>
+                        <Row gutter={[32, 32]}>
+                            <Col span={12}>
+                                <FeaturedCard
+                                    title={'Interstellar Exodus'}
+                                    description={''}
+                                    image={String(feature1)}
+                                    tag={"'Interstellar Exodus"}
+                                />
+                            </Col>
+                            <Col span={12}>2</Col>
+                        </Row>
                     </section>
                 </Layout.Content>
+                <Layout.Footer>
+                    <Row gutter={[16, 16]}>
+                        <Col span={6}>
+                            <Typography.Title className="!mb-0 !tracking-wider whitespace-nowrap !text-[#E50914]">
+                                ERDEFLIX
+                            </Typography.Title>
+                            <p className={'mt-6'}>
+                                The world's most immersive streaming experience.
+                                Dramatic, premium, and designed for film lovers
+                                who demand perfection in every frame.
+                            </p>
+                        </Col>
+                        <Col span={6}>
+                            <Typography.Title
+                                level={3}
+                                className="!mb-0 !tracking-wider whitespace-nowrap"
+                            >
+                                Platform
+                            </Typography.Title>
+                            <p></p>
+                        </Col>
+                        <Col span={6}>
+                            <Typography.Title
+                                level={3}
+                                className="!mb-0 !tracking-wider whitespace-nowrap"
+                            >
+                                Support
+                            </Typography.Title>
+                            <p></p>
+                        </Col>
+                        <Col span={6}>
+                            <Typography.Title
+                                level={3}
+                                className="!mb-0 !tracking-wider whitespace-nowrap"
+                            >
+                                Connect
+                            </Typography.Title>
+                            <p></p>
+                        </Col>
+                    </Row>
+                </Layout.Footer>
             </Layout>
         </ConfigProvider>
     );
