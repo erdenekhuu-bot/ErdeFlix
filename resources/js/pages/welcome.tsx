@@ -1,5 +1,5 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Layout,Flex,Menu, Typography,Input,ConfigProvider,theme,Button } from 'antd';
+import { Layout,Flex,Menu, Typography,Input,ConfigProvider,theme,Button,Image } from 'antd';
 import type { MenuProps } from 'antd';
 import {useState} from 'react';
 import { dashboard, login } from '@/routes';
@@ -7,7 +7,7 @@ import { register } from '@/routes';
 
 type MenuItem = Required<MenuProps>['items'][number];
 export default function Welcome() {
-    const { auth } = usePage().props;
+    const { auth,banner } = usePage().props;
     const [current, setCurrent] = useState('mail');
 
     const items: MenuItem[] = [
@@ -82,13 +82,11 @@ export default function Welcome() {
                 },
             }}
         >
-            <Layout className="min-h-screen">
+            <Layout className="scrollbar min-h-screen">
                 <Head title="Welcome" />
                 <Layout.Header>
                     <Flex className="!w-full" align="center" gap={24}>
-                        <Typography.Title
-                            className="!mb-0 !tracking-wider whitespace-nowrap !text-[#E50914]"
-                        >
+                        <Typography.Title className="!mb-0 !tracking-wider whitespace-nowrap !text-[#E50914]">
                             ERDEFLIX
                         </Typography.Title>
                         <Menu
@@ -126,6 +124,16 @@ export default function Welcome() {
                         </Flex>
                     </Flex>
                 </Layout.Header>
+                <Layout.Content>
+                    <section style={{ height: 'calc(100dvh)' }}>
+                        <Image
+                            preview={false}
+                            src={String(banner)}
+                            alt=""
+                            className=""
+                        />
+                    </section>
+                </Layout.Content>
             </Layout>
         </ConfigProvider>
     );
