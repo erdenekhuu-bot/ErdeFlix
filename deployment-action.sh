@@ -9,7 +9,6 @@ DST="/var/www/ErdeFlix"
 
 echo "Syncing files..."
 rsync -av --delete \
-#    --exclude='.env' \
     --exclude='storage/' \
     --exclude='node_modules/' \
     --exclude='vendor/' \
