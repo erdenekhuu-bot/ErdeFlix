@@ -1,198 +1,89 @@
-import { Head, Link, usePage } from '@inertiajs/react';
-import { Layout,Flex,Menu, Typography,Input,ConfigProvider,theme,Button,Image,Row,Col } from 'antd';
-import type { MenuProps } from 'antd';
-import {useState} from 'react';
-import { dashboard, login } from '@/routes';
-import { register } from '@/routes';
-import {FeaturedCard} from '@/components/card/FeaturedCard';
+import { usePage } from '@inertiajs/react';
+import { Flex, Button, Image, Row, Col } from 'antd';
+import { FeaturedCard } from '@/components/card/FeaturedCard';
+import HomeLayout from '@/layouts/home-layout';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper.css';
 
-type MenuItem = Required<MenuProps>['items'][number];
 export default function Welcome() {
-    const { auth, banner, feature1 } = usePage().props;
-    const [current, setCurrent] = useState('mail');
-
-    const items: MenuItem[] = [
-        {
-            label: 'Dashboard',
-            key: 1,
-        },
-        {
-            label: 'Explore',
-            key: 2,
-        },
-        {
-            label: 'Live hub',
-            key: 3,
-        },
-        {
-            label: 'Watch list',
-            key: 4
-        }
-    ];
-    const onClick: MenuProps['onClick'] = (e) => {
-        setCurrent(e.key);
-    };
-    const darkTheme = {
-        background: '#121212',
-        surface: '#1E1E1E',
-        surfaceLight: '#2D2D2D',
-        border: '#404040',
-        text: '#FFFFFF',
-        modalBackground: '#222222',
-    };
+    const { banner, records } = usePage<{
+        banner: string;
+        records: {
+            title: string;
+            description: string;
+            image: string;
+            kind: string;
+            date: string;
+        }[];
+    }>().props;
 
     return (
-        <ConfigProvider
-            theme={{
-                algorithm: theme.darkAlgorithm,
-
-                token: {
-                    colorBgLayout: darkTheme.background,
-                    colorBgContainer: darkTheme.surface,
-                    colorBgElevated: darkTheme.surfaceLight,
-                    colorBorder: darkTheme.border,
-                    colorText: darkTheme.text,
-                    colorPrimary: '#E50914', // Changed to Netflix red to unify branding!
-                    borderRadius: 8,
-                    wireframe: false,
-                },
-                components: {
-                    Layout: {
-                        bodyBg: darkTheme.background,
-                        headerBg: darkTheme.background,
-                        siderBg: darkTheme.background,
-                    },
-                    Menu: {
-                        darkItemBg: darkTheme.background,
-                        darkItemSelectedBg: darkTheme.surfaceLight,
-                        darkItemHoverBg: '#2A2A2A',
-                    },
-                    Input: {
-                        // Ensures input handles match the theme surface color
-                        colorBgContainer: darkTheme.surface,
-                    },
-                    Button: {
-                        // Unified button behavior matching the dark theme surface
-                        paddingInline: 20, // Clean horizontal padding like inputs
-                        fontWeight: 500,
-
-                        // Styling specifically for default/secondary buttons if used
-                        colorBgContainer: darkTheme.surface,
-                        colorBorder: darkTheme.border,
-                    },
-                },
-            }}
-        >
-            <Layout className="scrollbar min-h-screen">
-                <Head title="Welcome" />
-                <Layout.Header className={'!fixed !z-20 !w-full'}>
-                    <Flex className="!w-full" align="center" gap={24}>
-                        <Typography.Title className="!mb-0 !tracking-wider whitespace-nowrap !text-[#E50914]">
-                            ERDEFLIX
-                        </Typography.Title>
-                        <Menu
-                            theme={'dark'}
-                            onClick={onClick}
-                            selectedKeys={[current]}
-                            mode="horizontal"
-                            items={items}
-                            className="flex-1 !border-b-0 !bg-transparent"
-                        />
-                        <Input.Search
-                            placeholder={'Search movie...'}
-                            className={'!w-92'}
-                        />
-                        <Flex gap={12} align="center">
-                            {auth.user ? (
-                                <Link href={dashboard()}>
-                                    <Button type="primary">Dashboard</Button>
-                                </Link>
-                            ) : (
-                                <>
-                                    <Link href={login()}>
-                                        <Button
-                                            type="text"
-                                            className="!text-white hover:!bg-white/10"
-                                        >
-                                            Log in
-                                        </Button>
-                                    </Link>
-                                    <Link href={register()}>
-                                        <Button type="primary">Register</Button>
-                                    </Link>
-                                </>
-                            )}
-                        </Flex>
+        <HomeLayout title="Home">
+            <section className="relative h-[calc(100dvh)] overflow-hidden">
+                <Image
+                    preview={false}
+                    src={String(banner)}
+                    alt=""
+                    className={'object-center'}
+                />
+                <div className="absolute bottom-[calc(6.5rem)] left-[calc(5rem)]">
+                    <p className="text-[5rem] leading-[0.85] font-black">
+                        NEON
+                    </p>
+                    <p className="text-[5rem] leading-[0.85] leading-tight font-black text-[#E50914]">
+                        REBELLION
+                    </p>
+                    <p className="max-w-96">
+                        In a world where memories are traded like currency, one
+                        rogue hacker discovers a secret that could dismantle the
+                        digital empire controlling humanity's past.
+                    </p>
+                    <Flex gap={8} className="!mt-4">
+                        <Button size="large" type="primary" block>
+                            Play now
+                        </Button>
+                        <Button size="large" block>
+                            View detail
+                        </Button>
                     </Flex>
-                </Layout.Header>
-                <Layout.Content>
-                    <section
-                        style={{ height: 'calc(100dvh)', overflow: 'hidden' }}
-                    >
-                        <Image
-                            preview={false}
-                            src={String(banner)}
-                            alt=""
-                            className={'object-center'}
-                        />
-                    </section>
-                    <section className={''}>Down Here</section>
-                    <section className={'p-8'}>
-                        <Row gutter={[32, 32]}>
-                            <Col span={12}>
+                </div>
+            </section>
+            <section className={''}>
+                {records.length > 0 && (
+                    <Swiper spaceBetween={20} slidesPerView={4}>
+                        {records.map((item, index) => (
+                            <SwiperSlide key={index}>
                                 <FeaturedCard
-                                    title={'Interstellar Exodus'}
-                                    description={''}
-                                    image={String(feature1)}
-                                    tag={"'Interstellar Exodus"}
+                                    key={index}
+                                    image={item.image}
+                                    title={item.title}
+                                    description={item.description}
+                                    kind={item.kind}
+                                    date={item.date}
                                 />
-                            </Col>
-                            <Col span={12}>2</Col>
-                        </Row>
-                    </section>
-                </Layout.Content>
-                <Layout.Footer>
-                    <Row gutter={[16, 16]}>
-                        <Col span={6}>
-                            <Typography.Title className="!mb-0 !tracking-wider whitespace-nowrap !text-[#E50914]">
-                                ERDEFLIX
-                            </Typography.Title>
-                            <p className={'mt-6'}>
-                                The world's most immersive streaming experience.
-                                Dramatic, premium, and designed for film lovers
-                                who demand perfection in every frame.
-                            </p>
-                        </Col>
-                        <Col span={6}>
-                            <Typography.Title
-                                level={3}
-                                className="!mb-0 !tracking-wider whitespace-nowrap"
-                            >
-                                Platform
-                            </Typography.Title>
-                            <p></p>
-                        </Col>
-                        <Col span={6}>
-                            <Typography.Title
-                                level={3}
-                                className="!mb-0 !tracking-wider whitespace-nowrap"
-                            >
-                                Support
-                            </Typography.Title>
-                            <p></p>
-                        </Col>
-                        <Col span={6}>
-                            <Typography.Title
-                                level={3}
-                                className="!mb-0 !tracking-wider whitespace-nowrap"
-                            >
-                                Connect
-                            </Typography.Title>
-                            <p></p>
-                        </Col>
-                    </Row>
-                </Layout.Footer>
-            </Layout>
-        </ConfigProvider>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                )}
+            </section>
+            <section className={'p-8'}>
+                <Row gutter={[32, 32]}>
+                    <Col span={12}>
+                        <div className="relative h-[25rem] overflow-hidden">
+                            <Image
+                                preview={false}
+                                src={records[0].image}
+                                alt=""
+                                className="!h-full !w-full !object-cover"
+                            />
+                        </div>
+                    </Col>
+                    <Col span={12}>
+                        <Row>1</Row>
+                        <Row>2</Row>
+                    </Col>
+                </Row>
+            </section>
+        </HomeLayout>
     );
 }
