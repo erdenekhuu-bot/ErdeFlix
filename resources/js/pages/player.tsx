@@ -1,11 +1,9 @@
-// pages/Player.tsx
 import {
     PlayCircleOutlined,
     HeartOutlined,
     HeartFilled,
     ShareAltOutlined,
     DownloadOutlined,
-
     SettingOutlined,
     FullscreenOutlined,
     PauseOutlined,
@@ -24,9 +22,7 @@ import {
     Tag,
     Badge,
     Avatar,
-
     Input,
-
     Progress,
 
 } from 'antd';
@@ -333,130 +329,6 @@ export default function Player() {
                             </div>
                         </div>
 
-                        {/* Channel Guide & Recent Activity */}
-                        <div className="border-t border-white/10 p-6">
-                            <Row gutter={[24, 24]}>
-                                {/* Channel Guide */}
-                                <Col xs={24} lg={16}>
-                                    <Flex
-                                        justify="space-between"
-                                        align="center"
-                                        className="mb-4"
-                                    >
-                                        <Title
-                                            level={5}
-                                            className="!mb-0 !text-white"
-                                        >
-                                            📺 Channel Guide
-                                        </Title>
-                                        <Button
-                                            type="link"
-                                            className="!text-white/60 hover:!text-white"
-                                        >
-                                            View All
-                                        </Button>
-                                    </Flex>
-                                    <Row gutter={[12, 12]}>
-                                        {liveStreams.map((stream, index) => (
-                                            <Col xs={24} sm={12} key={index}>
-                                                <div className="cursor-pointer rounded-xl border border-white/5 bg-white/5 p-4 transition-all hover:border-white/20 hover:bg-white/10">
-                                                    <Flex
-                                                        justify="space-between"
-                                                        align="start"
-                                                    >
-                                                        <div>
-                                                            <Badge
-                                                                count="LIVE"
-                                                                style={{
-                                                                    backgroundColor:
-                                                                        '#E50914',
-                                                                }}
-                                                                className="mb-1"
-                                                            />
-                                                            <Text className="block text-sm font-medium text-white">
-                                                                {stream.title}
-                                                            </Text>
-                                                            <Text className="text-xs text-white/40">
-                                                                Next:{' '}
-                                                                {stream.next}
-                                                            </Text>
-                                                        </div>
-                                                        <div className="text-right">
-                                                            <Text className="text-xs text-green-400">
-                                                                {
-                                                                    stream.duration
-                                                                }
-                                                            </Text>
-                                                            <div className="mt-1">
-                                                                <Progress
-                                                                    percent={
-                                                                        stream.progress
-                                                                    }
-                                                                    showInfo={
-                                                                        false
-                                                                    }
-                                                                    strokeColor="#E50914"
-                                                                    trailColor="rgba(255,255,255,0.1)"
-                                                                    size="small"
-                                                                    className="!w-20"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </Flex>
-                                                </div>
-                                            </Col>
-                                        ))}
-                                    </Row>
-                                </Col>
-
-                                {/* Recent Activity */}
-                                <Col xs={24} lg={8}>
-                                    <Flex
-                                        justify="space-between"
-                                        align="center"
-                                        className="mb-4"
-                                    >
-                                        <Title
-                                            level={5}
-                                            className="!mb-0 !text-white"
-                                        >
-                                            💬 Recent Activity
-                                        </Title>
-                                        <Button
-                                            type="link"
-                                            className="!text-white/60 hover:!text-white"
-                                        >
-                                            Join Chat
-                                        </Button>
-                                    </Flex>
-                                    <div className="custom-scrollbar max-h-[200px] space-y-2 overflow-y-auto">
-                                        {recentActivity.map(
-                                            (activity, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="flex items-center gap-3 rounded-lg bg-white/5 p-3 transition-all hover:bg-white/10"
-                                                >
-                                                    <Text className="text-lg">
-                                                        {activity.icon}
-                                                    </Text>
-                                                    <div className="flex-1">
-                                                        <Text className="text-sm text-white/90">
-                                                            <Text className="font-medium text-white">
-                                                                {activity.user}
-                                                            </Text>{' '}
-                                                            {activity.action}
-                                                        </Text>
-                                                    </div>
-                                                    <Text className="text-xs text-white/30">
-                                                        {activity.time}
-                                                    </Text>
-                                                </div>
-                                            ),
-                                        )}
-                                    </div>
-                                </Col>
-                            </Row>
-                        </div>
 
                         {/* Live Chat Section */}
                         <div className="border-t border-white/10 bg-white/5 p-6">

@@ -1,5 +1,4 @@
 import {
-    ArrowRightOutlined,
     CalendarOutlined,
     EyeOutlined,
     StarOutlined,
@@ -152,31 +151,6 @@ export function FeaturedCard({
                 <p className="line-clamp-2 min-h-[40px] text-sm leading-relaxed text-white/70">
                     {description}
                 </p>
-
-                {/* Interactive Footer */}
-                <div className="flex items-center justify-between pt-3">
-                    <div className="flex items-center gap-2">
-                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 p-0.5">
-                            <div className="flex h-full w-full items-center justify-center rounded-full bg-black/60 text-xs font-bold text-white">
-                                P
-                            </div>
-                        </div>
-                        <div>
-                            <p className="text-xs font-medium text-white/60">
-                                Platform
-                            </p>
-                            <p className="text-xs font-semibold text-white/90">
-                                Premium
-                            </p>
-                        </div>
-                    </div>
-
-                    <button className="group/btn relative flex items-center gap-2 overflow-hidden rounded-full bg-white/10 px-5 py-2 text-xs font-bold text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/20">
-                        <span className="relative z-10">Watch Now</span>
-                        <ArrowRightOutlined className="relative z-10 text-[10px] transition-transform duration-300 group-hover/btn:translate-x-1" />
-                        <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 transition-transform duration-500 group-hover/btn:translate-x-0" />
-                    </button>
-                </div>
             </div>
 
             {/* Animated Border Glow */}
