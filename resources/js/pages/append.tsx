@@ -13,7 +13,6 @@ import {
     Statistic,
     Empty,
     Pagination,
-    Skeleton,
     Select,
     Slider,
     Checkbox,
@@ -419,18 +418,6 @@ export default function Appended() {
                             </Col>
                             <Col xs={24} md={12}>
                                 <div className="flex flex-col gap-3">
-                                    <Input
-                                        placeholder="Search new movies..."
-                                        prefix={
-                                            <SearchOutlined className="text-white/40" />
-                                        }
-                                        value={searchText}
-                                        onChange={(e) =>
-                                            setSearchText(e.target.value)
-                                        }
-                                        className="!border-white/20 !bg-white/10 !text-white placeholder:text-white/40"
-                                        size="large"
-                                    />
                                     <Flex gap={8} className="flex-wrap">
                                         <Select
                                             value={sortBy}
