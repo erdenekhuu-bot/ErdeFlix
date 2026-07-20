@@ -40,35 +40,6 @@ interface RecordItem {
 export default function Category() {
     const { records } = usePage<{ records: RecordItem[] }>().props;
 
-    // Mock collections data
-    const collections = [
-        'Neon Noir Classics',
-        'The Modern Epics',
-        'Edge of My Seat',
-        'The Silent Heir',
-        'Guardian of the Peaks',
-        'Aurora Protocol',
-        'The Signal',
-        'Observer Effect',
-        'Velocity 9',
-        'The Inheritance',
-        'Apex Predators',
-        'Documentary',
-    ];
-
-    const recentlySaved = [
-        'Synapse',
-        'The Silent Heir',
-        'Guardian of the Peaks',
-        'Aurora Protocol',
-        'The Signal',
-        'Observer Effect',
-        'Velocity 9',
-        'The Inheritance',
-        'Apex Predators',
-        'Documentary',
-    ];
-
     // Mock trending categories
     const trendingTopics = [
         { name: 'Action', icon: '⚡', color: '#E50914' },
@@ -100,69 +71,6 @@ export default function Category() {
                     </div>
                 </section>
 
-                {/* My Collections */}
-                <section className="px-4 py-12 md:px-8 lg:px-16">
-                    <div className="container mx-auto">
-                        <Row gutter={[16, 16]}>
-                            {collections
-                                .slice(0, 6)
-                                .map((collection, index) => (
-                                    <Col
-                                        xs={24}
-                                        sm={12}
-                                        md={8}
-                                        lg={6}
-                                        key={index}
-                                    >
-                                        <div className="group cursor-pointer rounded-2xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/10">
-                                            <div className="flex items-start justify-between">
-                                                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#E50914]/20 to-purple-600/20 text-xl">
-                                                    {
-                                                        [
-                                                            '🌆',
-                                                            '🎬',
-                                                            '😱',
-                                                            '🌑',
-                                                            '🏔️',
-                                                            '🌌',
-                                                        ][index % 6]
-                                                    }
-                                                </div>
-                                                <Badge
-                                                    count={
-                                                        Math.floor(
-                                                            Math.random() * 20,
-                                                        ) + 5
-                                                    }
-                                                    style={{
-                                                        backgroundColor:
-                                                            'rgba(255,255,255,0.1)',
-                                                        color: '#fff',
-                                                    }}
-                                                />
-                                            </div>
-                                            <Title
-                                                level={5}
-                                                className="!mt-3 !mb-1 !text-sm !text-white"
-                                            >
-                                                {collection}
-                                            </Title>
-                                            <div className="flex items-center gap-3 text-xs text-white/40">
-                                                <span className="flex items-center gap-1">
-                                                    <LockOutlined className="text-[10px]" />
-                                                    Private
-                                                </span>
-                                                <span className="flex items-center gap-1">
-                                                    <ClockCircleOutlined className="text-[10px]" />
-                                                    Updated 2d ago
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </Col>
-                                ))}
-                        </Row>
-                    </div>
-                </section>
 
                 {/* Categories with Glassmorphism */}
                 <section className="px-4 py-16 md:px-8 lg:px-16">

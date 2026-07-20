@@ -8,9 +8,7 @@ import {
     Tag,
     Badge,
     Divider,
-    Input,
     Space,
-    Statistic,
     Empty,
     Pagination,
     Select,
@@ -20,16 +18,12 @@ import {
 } from 'antd';
 import HomeLayout from '@/layouts/home-layout';
 import {
-    PlusOutlined,
-    SearchOutlined,
     FilterOutlined,
     ClockCircleOutlined,
     EyeOutlined,
     StarOutlined,
     HeartOutlined,
     PlayCircleOutlined,
-    FireOutlined,
-    TrophyOutlined,
     AppstoreOutlined,
     UnorderedListOutlined,
 } from '@ant-design/icons';
@@ -276,14 +270,8 @@ export default function Appended() {
             const matchesGenre =
                 selectedGenres.length === 0 ||
                 selectedGenres.includes(movie.genre);
-            const matchesYear =
-                parseInt(movie.year) >= yearRange[0] &&
-                parseInt(movie.year) <= yearRange[1];
-            const matchesRating =
-                parseFloat(movie.rating) >= ratingRange[0] &&
-                parseFloat(movie.rating) <= ratingRange[1];
             return (
-                matchesSearch && matchesGenre && matchesYear && matchesRating
+                matchesSearch && matchesGenre
             );
         })
         .sort((a, b) => {
@@ -302,8 +290,7 @@ export default function Appended() {
                     return parseFloat(b.rating) - parseFloat(a.rating);
                 case 'views':
                     return (
-                        parseInt(b.views.replace('K', '')) -
-                        parseInt(a.views.replace('K', ''))
+                        parseInt(b.views.replace('K', ''))
                     );
                 default:
                     return 0;
@@ -317,19 +304,6 @@ export default function Appended() {
         currentPage * pageSize,
     );
 
-    // Stats
-    const stats = {
-        total: filteredMovies.length,
-        newThisWeek: filteredMovies.filter(
-            (m) =>
-                m.addedDate === 'Today' ||
-                m.addedDate === '1 day ago' ||
-                m.addedDate === '2 days ago',
-        ).length,
-        trending: filteredMovies.filter((m) => m.isTrending).length,
-        topRated: filteredMovies.filter((m) => parseFloat(m.rating) >= 4.7)
-            .length,
-    };
 
     return (
         <HomeLayout title="New Appended Movies">
@@ -337,136 +311,54 @@ export default function Appended() {
             <section className="bg-gradient-to-b from-black/95 to-black/90 px-4 py-8 md:px-8 lg:px-16">
                 <div className="container mx-auto">
                     <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 to-white/10 p-8 backdrop-blur-xl">
-                        <Row gutter={[24, 24]} align="middle">
-                            <Col xs={24} md={12}>
-                                <div>
-                                    <Badge
-                                        count="NEW"
-                                        style={{ backgroundColor: '#00b894' }}
-                                        className="mb-3"
+                        <div className="flex flex-col gap-3">
+                            <Flex gap={8} className="flex-wrap">
+                                <Select
+                                    value={sortBy}
+                                    onChange={setSortBy}
+                                    className="!w-40"
+                                    dropdownClassName="dark-dropdown"
+                                >
+                                    <Option value="newest">
+                                        Newest First
+                                    </Option>
+                                    <Option value="oldest">
+                                        Oldest First
+                                    </Option>
+                                    <Option value="rating">
+                                        Top Rated
+                                    </Option>
+                                    <Option value="views">
+                                        Most Views
+                                    </Option>
+                                </Select>
+                                <Button
+                                    icon={<FilterOutlined />}
+                                    className="!border-white/20 !bg-white/10 !text-white"
+                                    onClick={() =>
+                                        setFilterDrawer(true)
+                                    }
+                                >
+                                    Filters
+                                </Button>
+                                <Button.Group>
+                                    <Button
+                                        icon={<AppstoreOutlined />}
+                                        className={`${viewMode === 'grid' ? '!bg-[#E50914] !text-white' : '!border-white/20 !bg-white/10 !text-white'}`}
+                                        onClick={() =>
+                                            setViewMode('grid')
+                                        }
                                     />
-                                    <Title
-                                        level={2}
-                                        className="!mb-0 !text-white"
-                                    >
-                                        🎬 New Appended Movies
-                                    </Title>
-                                    <Text className="text-white/40">
-                                        Discover the latest additions to our
-                                        collection
-                                    </Text>
-                                    <div className="mt-3 flex flex-wrap gap-4">
-                                        <Statistic
-                                            title={
-                                                <Text className="text-xs text-white/30">
-                                                    Total
-                                                </Text>
-                                            }
-                                            value={stats.total}
-                                            valueStyle={{
-                                                color: 'white',
-                                                fontSize: '20px',
-                                                fontWeight: 'bold',
-                                            }}
-                                            prefix={
-                                                <PlusOutlined className="text-[#E50914]" />
-                                            }
-                                        />
-                                        <Statistic
-                                            title={
-                                                <Text className="text-xs text-white/30">
-                                                    New This Week
-                                                </Text>
-                                            }
-                                            value={stats.newThisWeek}
-                                            valueStyle={{
-                                                color: '#00b894',
-                                                fontSize: '20px',
-                                                fontWeight: 'bold',
-                                            }}
-                                        />
-                                        <Statistic
-                                            title={
-                                                <Text className="text-xs text-white/30">
-                                                    Trending
-                                                </Text>
-                                            }
-                                            value={stats.trending}
-                                            valueStyle={{
-                                                color: '#E50914',
-                                                fontSize: '20px',
-                                                fontWeight: 'bold',
-                                            }}
-                                            prefix={<FireOutlined />}
-                                        />
-                                        <Statistic
-                                            title={
-                                                <Text className="text-xs text-white/30">
-                                                    Top Rated
-                                                </Text>
-                                            }
-                                            value={stats.topRated}
-                                            valueStyle={{
-                                                color: 'gold',
-                                                fontSize: '20px',
-                                                fontWeight: 'bold',
-                                            }}
-                                            prefix={<TrophyOutlined />}
-                                        />
-                                    </div>
-                                </div>
-                            </Col>
-                            <Col xs={24} md={12}>
-                                <div className="flex flex-col gap-3">
-                                    <Flex gap={8} className="flex-wrap">
-                                        <Select
-                                            value={sortBy}
-                                            onChange={setSortBy}
-                                            className="!w-40"
-                                            dropdownClassName="dark-dropdown"
-                                        >
-                                            <Option value="newest">
-                                                Newest First
-                                            </Option>
-                                            <Option value="oldest">
-                                                Oldest First
-                                            </Option>
-                                            <Option value="rating">
-                                                Top Rated
-                                            </Option>
-                                            <Option value="views">
-                                                Most Views
-                                            </Option>
-                                        </Select>
-                                        <Button
-                                            icon={<FilterOutlined />}
-                                            className="!border-white/20 !bg-white/10 !text-white"
-                                            onClick={() =>
-                                                setFilterDrawer(true)
-                                            }
-                                        >
-                                            Filters
-                                        </Button>
-                                        <Button.Group>
-                                            <Button
-                                                icon={<AppstoreOutlined />}
-                                                className={`${viewMode === 'grid' ? '!bg-[#E50914] !text-white' : '!border-white/20 !bg-white/10 !text-white'}`}
-                                                onClick={() =>
-                                                    setViewMode('grid')
-                                                }
-                                            />
-                                            <Button
-                                                icon={<UnorderedListOutlined />}
-                                                className={`${viewMode === 'list' ? '!bg-[#E50914] !text-white' : '!border-white/20 !bg-white/10 !text-white'}`}
-                                                onClick={() =>
-                                                    setViewMode('list')
-                                                }
-                                            />
-                                        </Button.Group>
-                                    </Flex>
-                                </div>
-                            </Col>
-                        </Row>
+                                    <Button
+                                        icon={<UnorderedListOutlined />}
+                                        className={`${viewMode === 'list' ? '!bg-[#E50914] !text-white' : '!border-white/20 !bg-white/10 !text-white'}`}
+                                        onClick={() =>
+                                            setViewMode('list')
+                                        }
+                                    />
+                                </Button.Group>
+                            </Flex>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -554,18 +446,7 @@ export default function Appended() {
                                                     className="absolute !h-14 !w-14 !bg-[#E50914] !text-2xl opacity-0 transition-opacity group-hover:opacity-100"
                                                 />
                                                 <div className="absolute right-3 bottom-3 left-3 flex items-end justify-between">
-                                                    <div className="space-y-1">
-                                                        <Badge
-                                                            count={
-                                                                movie.quality
-                                                            }
-                                                            style={{
-                                                                backgroundColor:
-                                                                    'rgba(0,0,0,0.7)',
-                                                                color: '#fff',
-                                                            }}
-                                                        />
-                                                    </div>
+
                                                     <div className="flex items-center gap-1.5 rounded-full bg-black/60 px-2 py-1">
                                                         <EyeOutlined className="text-xs text-white/60" />
                                                         <Text className="text-xs text-white/80">
@@ -592,18 +473,6 @@ export default function Appended() {
                                                                 className="rounded-full border-0 text-[10px]"
                                                             >
                                                                 {movie.genre}
-                                                            </Tag>
-                                                            <Tag
-                                                                color="default"
-                                                                className="rounded-full border-0 text-[10px]"
-                                                            >
-                                                                {movie.year}
-                                                            </Tag>
-                                                            <Tag
-                                                                color="default"
-                                                                className="rounded-full border-0 text-[10px]"
-                                                            >
-                                                                {movie.duration}
                                                             </Tag>
                                                         </Flex>
                                                         <div className="mt-2 flex items-center gap-2">
