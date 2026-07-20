@@ -89,9 +89,9 @@ export default function Welcome() {
                         style={{ objectFit: 'cover' }}
                     />
                     {/* Enhanced Gradients */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent" />
+
                     <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/30 to-transparent" />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80" />
+
 
                     {/* Animated Gradient Orbs */}
                     <div className="absolute -top-40 -right-40 h-[600px] w-[600px] animate-pulse rounded-full bg-purple-600/20 blur-3xl" />
@@ -103,41 +103,12 @@ export default function Welcome() {
                         <div className="h-full w-full bg-[repeating-linear-gradient(0deg,transparent,transparent_3px,rgba(255,255,255,0.02)_3px,rgba(255,255,255,0.02)_6px)]" />
                     </div>
 
-                    {/* Floating Particles */}
-                    <div className="absolute inset-0">
-                        {[...Array(20)].map((_, i) => (
-                            <div
-                                key={i}
-                                className="animate-float absolute h-1 w-1 rounded-full bg-white/20"
-                                style={{
-                                    top: `${Math.random() * 100}%`,
-                                    left: `${Math.random() * 100}%`,
-                                    animationDelay: `${Math.random() * 5}s`,
-                                    animationDuration: `${3 + Math.random() * 4}s`,
-                                }}
-                            />
-                        ))}
-                    </div>
+
                 </div>
 
                 <div className="absolute inset-0 flex items-center">
                     <div className="container mx-auto px-4 md:px-8 lg:px-16">
                         <div className="max-w-4xl">
-                            {/* Animated Badge */}
-                            <div className="animate-fade-in-up mb-6 inline-block">
-                                <Badge
-                                    count="LIVE"
-                                    style={{ backgroundColor: '#E50914' }}
-                                    className="mr-2"
-                                />
-                                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs font-bold tracking-wider text-white/80 uppercase backdrop-blur-md">
-                                    <span className="relative flex h-2 w-2">
-                                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-                                        <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-                                    </span>
-                                    Now Streaming • 4K HDR
-                                </span>
-                            </div>
 
                             {/* Main Title with Glitch Effect */}
                             <div className="animate-fade-in-up animation-delay-200 space-y-2">
@@ -167,16 +138,6 @@ export default function Welcome() {
                                         the digital empire controlling
                                         humanity's past.
                                     </p>
-                                    <div className="mt-3 flex items-center gap-4 text-sm text-white/40">
-                                        <span className="flex items-center gap-1">
-                                            <TrophyOutlined className="text-yellow-400" />
-                                            #1 Trending
-                                        </span>
-                                        <span>•</span>
-                                        <span>⭐ 4.8/5</span>
-                                        <span>•</span>
-                                        <span>🎬 2024</span>
-                                    </div>
                                 </div>
                             </div>
 
@@ -200,95 +161,12 @@ export default function Welcome() {
                                 >
                                     Add to List
                                 </Button>
-                                <Button
-                                    size="large"
-                                    shape="circle"
-                                    className="!h-14 !w-14 !border-white/20 !bg-white/10 !text-white backdrop-blur-sm transition-all duration-300 hover:!scale-105 hover:!bg-white/20"
-                                    icon={<ShareAltOutlined />}
-                                />
                             </Flex>
 
-                            {/* Enhanced Stats */}
-                            <div className="animate-fade-in-up animation-delay-800 mt-10 flex flex-wrap items-center gap-8 text-white/60">
-                                <div className="flex items-center gap-3">
-                                    <div className="flex -space-x-2">
-                                        <Avatar
-                                            size="small"
-                                            className="border-2 border-black"
-                                        >
-                                            A
-                                        </Avatar>
-                                        <Avatar
-                                            size="small"
-                                            className="border-2 border-black"
-                                        >
-                                            B
-                                        </Avatar>
-                                        <Avatar
-                                            size="small"
-                                            className="border-2 border-black"
-                                        >
-                                            C
-                                        </Avatar>
-                                        <Avatar
-                                            size="small"
-                                            className="border-2 border-black"
-                                        >
-                                            D
-                                        </Avatar>
-                                    </div>
-                                    <div>
-                                        <span className="text-sm font-medium text-white">
-                                            12.4K
-                                        </span>
-                                        <span className="ml-1 text-xs text-white/40">
-                                            watching
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="h-6 w-px bg-white/20" />
-                                <div className="flex items-center gap-2">
-                                    <StarOutlined className="text-yellow-400" />
-                                    <span className="text-sm font-medium text-white">
-                                        4.8
-                                    </span>
-                                    <span className="text-xs text-white/40">
-                                        (2.3K reviews)
-                                    </span>
-                                </div>
-                                <div className="h-6 w-px bg-white/20" />
-                                <div className="flex items-center gap-2">
-                                    <ClockCircleOutlined />
-                                    <span className="text-sm font-medium text-white">
-                                        2h 15m
-                                    </span>
-                                </div>
-                                <div className="h-6 w-px bg-white/20" />
-                                <div className="flex items-center gap-2">
-                                    <EyeOutlined />
-                                    <span className="text-sm font-medium text-white">
-                                        1.2M
-                                    </span>
-                                    <span className="text-xs text-white/40">
-                                        views
-                                    </span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Scroll Indicator */}
-                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-                    <div className="flex flex-col items-center gap-2 text-white/30">
-                        <span className="text-[10px] tracking-widest uppercase">
-                            Scroll to explore
-                        </span>
-                        <div className="h-12 w-6 rounded-full border-2 border-white/20 p-1">
-                            <div className="animate-scroll h-3 w-3 rounded-full bg-gradient-to-b from-[#E50914] to-white/30" />
-                        </div>
-                    </div>
-                </div>
             </section>
 
             {/* Trending Now with 3D Effect */}
@@ -297,17 +175,13 @@ export default function Welcome() {
                     <div className="mb-10 flex items-center justify-between">
                         <div>
                             <div className="flex items-center gap-3">
-                                <div className="h-8 w-1 rounded-full bg-gradient-to-b from-[#E50914] to-purple-500" />
                                 <Title
                                     level={2}
                                     className="!mb-0 !text-3xl !font-bold !text-white"
                                 >
-                                    🔥 Trending Now
+                                    Trending Now
                                 </Title>
                             </div>
-                            <Text className="mt-1 block text-white/40">
-                                Most popular content this week
-                            </Text>
                         </div>
                         <div className="flex items-center gap-3">
                             <Button
@@ -368,17 +242,12 @@ export default function Welcome() {
                     <div className="mb-10 flex items-center justify-between">
                         <div>
                             <div className="flex items-center gap-3">
-                                <div className="h-8 w-1 rounded-full bg-gradient-to-b from-blue-500 to-cyan-500" />
                                 <Title
                                     level={2}
                                     className="!mb-0 !text-3xl !font-bold !text-white"
-                                >
-                                    🎬 Featured Content
+                                >Featured Content
                                 </Title>
                             </div>
-                            <Text className="mt-1 block text-white/40">
-                                Handpicked just for you
-                            </Text>
                         </div>
                         <Button
                             type="link"
@@ -409,11 +278,7 @@ export default function Welcome() {
                                     <div className="absolute top-6 left-6">
                                         <Badge
                                             count="⭐ FEATURED"
-                                            style={{
-                                                backgroundColor:
-                                                    'rgba(229,9,20,0.9)',
-                                                padding: '4px 12px',
-                                            }}
+                                            style={{ backgroundColor: 'rgba(229,9,20,0.9)' }}
                                         />
                                     </div>
 
@@ -443,31 +308,6 @@ export default function Welcome() {
                                         <Paragraph className="!mb-4 max-w-lg !text-base !text-white/70">
                                             {mainFeature.description}
                                         </Paragraph>
-
-                                        <div className="flex flex-wrap items-center gap-6 text-sm text-white/60">
-                                            <span className="flex items-center gap-2">
-                                                <CalendarOutlined />
-                                                {new Date(
-                                                    mainFeature.date,
-                                                ).toLocaleDateString('en-US', {
-                                                    year: 'numeric',
-                                                    month: 'short',
-                                                    day: 'numeric',
-                                                })}
-                                            </span>
-                                            <span className="flex items-center gap-2">
-                                                <EyeOutlined />
-                                                1.2M views
-                                            </span>
-                                            <span className="flex items-center gap-2">
-                                                <StarOutlined className="text-yellow-400" />
-                                                4.8
-                                            </span>
-                                            <span className="flex items-center gap-2">
-                                                <ClockCircleOutlined />
-                                                2h 15m
-                                            </span>
-                                        </div>
 
                                         <Flex gap={8} className="!mt-6">
                                             <Button
@@ -587,17 +427,12 @@ export default function Welcome() {
                     <div className="mb-10 flex items-center justify-between">
                         <div>
                             <div className="flex items-center gap-3">
-                                <div className="h-8 w-1 rounded-full bg-gradient-to-b from-yellow-400 to-orange-500" />
                                 <Title
                                     level={2}
                                     className="!mb-0 !text-3xl !font-bold !text-white"
-                                >
-                                    ⭐ Top Rated
+                                >Top Rated
                                 </Title>
                             </div>
-                            <Text className="mt-1 block text-white/40">
-                                Highest rated content
-                            </Text>
                         </div>
                         <Button
                             type="link"
@@ -675,102 +510,7 @@ export default function Welcome() {
                 </div>
             </section>
 
-            {/* Categories with Glassmorphism */}
-            <section className="px-4 py-16 md:px-8 lg:px-16">
-                <div className="container mx-auto">
-                    <div className="mb-10">
-                        <div className="flex items-center gap-3">
-                            <div className="h-8 w-1 rounded-full bg-gradient-to-b from-purple-500 to-pink-500" />
-                            <Title
-                                level={2}
-                                className="!mb-0 !text-3xl !font-bold !text-white"
-                            >
-                                📺 Browse Categories
-                            </Title>
-                        </div>
-                        <Text className="mt-1 block text-white/40">
-                            Explore by genre and discover your next favorite
-                        </Text>
-                    </div>
 
-                    <Row gutter={[16, 16]}>
-                        {trendingTopics.map((category, index) => (
-                            <Col xs={12} sm={8} md={6} lg={4} key={index}>
-                                <div
-                                    className="group cursor-pointer rounded-2xl p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-                                    style={{
-                                        background: `linear-gradient(135deg, ${category.color}20, ${category.color}10)`,
-                                        border: `1px solid ${category.color}30`,
-                                    }}
-                                >
-                                    <div className="mb-3 text-4xl transition-transform duration-300 group-hover:scale-110">
-                                        {category.icon}
-                                    </div>
-                                    <Text className="text-base font-semibold text-white/80 group-hover:text-white">
-                                        {category.name}
-                                    </Text>
-                                    <div className="mt-2 text-xs text-white/30">
-                                        {Math.floor(Math.random() * 100 + 50)}{' '}
-                                        titles
-                                    </div>
-                                    <div className="mt-3 h-0.5 w-0 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-all duration-500 group-hover:w-full" />
-                                </div>
-                            </Col>
-                        ))}
-                    </Row>
-                </div>
-            </section>
-
-            {/* Newsletter / CTA Section */}
-            <section className="relative overflow-hidden px-4 py-16 md:px-8 lg:px-16">
-                <div className="absolute inset-0">
-                    <div className="absolute -top-20 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-[#E50914]/20 blur-3xl" />
-                    <div className="absolute -bottom-20 left-1/4 h-64 w-64 rounded-full bg-purple-600/20 blur-3xl" />
-                    <div className="absolute right-1/4 -bottom-20 h-64 w-64 rounded-full bg-blue-600/20 blur-3xl" />
-                </div>
-
-                <div className="relative container mx-auto">
-                    <div className="rounded-3xl border border-white/10 bg-white/5 p-12 text-center backdrop-blur-xl">
-                        <div className="mx-auto max-w-2xl">
-                            <div className="mb-4 text-5xl">🎬</div>
-                            <Title
-                                level={2}
-                                className="!mb-2 !text-3xl !font-bold !text-white"
-                            >
-                                Never Miss a Release
-                            </Title>
-                            <Paragraph className="!text-white/60">
-                                Get notified about new releases, exclusive
-                                content, and personalized recommendations.
-                            </Paragraph>
-                            <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-                                <input
-                                    type="email"
-                                    placeholder="Enter your email"
-                                    className="w-full rounded-full border border-white/20 bg-white/10 px-6 py-3 text-white placeholder-white/40 backdrop-blur-sm focus:border-[#E50914] focus:ring-2 focus:ring-[#E50914]/50 focus:outline-none sm:max-w-xs"
-                                />
-                                <Button
-                                    type="primary"
-                                    size="large"
-                                    className="!h-12 !border-[#E50914] !bg-[#E50914] !px-8 !text-white hover:!bg-[#f6121d]"
-                                >
-                                    Subscribe Now
-                                </Button>
-                            </div>
-                            <div className="mt-4 flex items-center justify-center gap-4 text-xs text-white/30">
-                                <span className="flex items-center gap-1">
-                                    <CheckCircleOutlined />
-                                    No spam
-                                </span>
-                                <span>•</span>
-                                <span>Unsubscribe anytime</span>
-                                <span>•</span>
-                                <span>Privacy protected</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </HomeLayout>
     );
 }

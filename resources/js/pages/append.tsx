@@ -1,31 +1,20 @@
-// pages/Appended.tsx
 import { useState } from 'react';
 import {
     Flex,
     Button,
-    Image,
     Row,
     Col,
     Typography,
     Tag,
     Badge,
-    Avatar,
-    Card,
     Divider,
     Input,
     Space,
-    Tooltip,
-    Progress,
-    Dropdown,
-    Menu,
-    Tabs,
-    List,
     Statistic,
     Empty,
     Pagination,
     Skeleton,
     Select,
-    DatePicker,
     Slider,
     Checkbox,
     Drawer,
@@ -35,21 +24,15 @@ import {
     PlusOutlined,
     SearchOutlined,
     FilterOutlined,
-
     ClockCircleOutlined,
     EyeOutlined,
     StarOutlined,
     HeartOutlined,
-
     PlayCircleOutlined,
-
     FireOutlined,
-
     TrophyOutlined,
-
     AppstoreOutlined,
     UnorderedListOutlined,
-
 } from '@ant-design/icons';
 
 const { Title, Text } = Typography;

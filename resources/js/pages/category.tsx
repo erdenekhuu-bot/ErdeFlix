@@ -1,44 +1,33 @@
 import { usePage } from '@inertiajs/react';
-import HomeLayout from '@/layouts/home-layout';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import HomeLayout from '@/layouts/home-layout';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+// eslint-disable-next-line import/order
 import { FeaturedCard } from '@/components/card/FeaturedCard';
 import {
     PlusOutlined,
     FilterOutlined,
     RightOutlined,
     HeartOutlined,
-    HeartFilled,
-    UserOutlined,
     TeamOutlined,
     LockOutlined,
-    GlobalOutlined,
     StarOutlined,
-    FireOutlined,
     ClockCircleOutlined,
-    EyeOutlined,
-    ThunderboltOutlined,
-    RocketOutlined,
 } from '@ant-design/icons';
 import {
     Button,
-    Tag,
+
     Input,
     Row,
     Col,
-    Card,
-    Avatar,
     Badge,
-    Space,
     Typography,
-    Divider,
 } from 'antd';
 
 const { Title, Text, Paragraph } = Typography;
-const { Search } = Input;
 
 interface RecordItem {
     title: string;
@@ -80,6 +69,16 @@ export default function Category() {
         'Documentary',
     ];
 
+    // Mock trending categories
+    const trendingTopics = [
+        { name: 'Action', icon: '⚡', color: '#E50914' },
+        { name: 'Sci-Fi', icon: '🚀', color: '#00d4ff' },
+        { name: 'Drama', icon: '🎭', color: '#ff6b6b' },
+        { name: 'Comedy', icon: '😂', color: '#ffd93d' },
+        { name: 'Thriller', icon: '🔪', color: '#6c5ce7' },
+        { name: 'Romance', icon: '❤️', color: '#fd79a8' },
+    ];
+
     return (
         <HomeLayout title="Watchlist & Collections">
             <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
@@ -91,43 +90,12 @@ export default function Category() {
 
                     <div className="relative container mx-auto">
                         <div className="max-w-4xl">
-                            <Badge
-                                count="BETA"
-                                className="!mb-4"
-                                style={{ backgroundColor: '#E50914' }}
-                            />
                             <Title
                                 level={1}
                                 className="!mb-2 !text-5xl !font-bold !text-white md:!text-6xl"
                             >
                                 Watchlist & Collections
                             </Title>
-                            <Paragraph className="!text-lg !text-white/60">
-                                Manage your cinematic library and curations.
-                            </Paragraph>
-
-                            {/* Action Buttons */}
-                            <div className="mt-6 flex flex-wrap gap-3">
-                                <Button
-                                    type="primary"
-                                    icon={<PlusOutlined />}
-                                    className="!border-[#E50914] !bg-[#E50914] hover:!bg-[#f6121d]"
-                                >
-                                    New Collection
-                                </Button>
-                                <Button
-                                    icon={<FilterOutlined />}
-                                    className="!border-white/20 !bg-white/10 !text-white hover:!bg-white/20"
-                                >
-                                    Filter
-                                </Button>
-                                <Button
-                                    icon={<TeamOutlined />}
-                                    className="!border-white/20 !bg-white/10 !text-white hover:!bg-white/20"
-                                >
-                                    Collaborate
-                                </Button>
-                            </div>
                         </div>
                     </div>
                 </section>
@@ -135,28 +103,6 @@ export default function Category() {
                 {/* My Collections */}
                 <section className="px-4 py-12 md:px-8 lg:px-16">
                     <div className="container mx-auto">
-                        <div className="mb-6 flex items-center justify-between">
-                            <div>
-                                <Title
-                                    level={2}
-                                    className="!mb-1 !text-2xl !font-bold !text-white"
-                                >
-                                    📚 My Collections
-                                </Title>
-                                <Text className="text-white/40">
-                                    {collections.length} collections
-                                </Text>
-                            </div>
-                            <Button
-                                type="link"
-                                className="!text-white/60 hover:!text-white"
-                                icon={<RightOutlined />}
-                                iconPosition="end"
-                            >
-                                View All
-                            </Button>
-                        </div>
-
                         <Row gutter={[16, 16]}>
                             {collections
                                 .slice(0, 6)
@@ -218,149 +164,49 @@ export default function Category() {
                     </div>
                 </section>
 
-                {/* Recently Saved & AI Pick Row */}
-                <section className="px-4 py-8 md:px-8 lg:px-16">
+                {/* Categories with Glassmorphism */}
+                <section className="px-4 py-16 md:px-8 lg:px-16">
                     <div className="container mx-auto">
-                        <Row gutter={[24, 24]}>
-                            {/* Recently Saved */}
-                            <Col xs={24} lg={16}>
-                                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                                    <div className="mb-4 flex items-center justify-between">
-                                        <div>
-                                            <Title
-                                                level={3}
-                                                className="!mb-0 !text-xl !font-bold !text-white"
-                                            >
-                                                ⏱️ Recently Saved
-                                            </Title>
-                                            <Text className="text-sm text-white/40">
-                                                Last 7 days
-                                            </Text>
+                        <div className="mb-10">
+                            <div className="flex items-center gap-3">
+                                <Title
+                                    level={2}
+                                    className="!mb-0 !text-3xl !font-bold !text-white"
+                                >
+                                    Browse Categories
+                                </Title>
+                            </div>
+                        </div>
+
+                        <Row gutter={[16, 16]}>
+                            {trendingTopics.map((category, index) => (
+                                <Col xs={12} sm={8} md={6} lg={4} key={index}>
+                                    <div
+                                        className="group cursor-pointer rounded-2xl p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                                        style={{
+                                            background: `linear-gradient(135deg, ${category.color}20, ${category.color}10)`,
+                                            border: `1px solid ${category.color}30`,
+                                        }}
+                                    >
+                                        <div className="mb-3 text-4xl transition-transform duration-300 group-hover:scale-110">
+                                            {category.icon}
                                         </div>
-                                        <Button
-                                            type="link"
-                                            className="!text-white/60 hover:!text-white"
-                                            icon={<RightOutlined />}
-                                            iconPosition="end"
-                                        >
-                                            View All
-                                        </Button>
-                                    </div>
-
-                                    <Row gutter={[12, 12]}>
-                                        {recentlySaved
-                                            .slice(0, 8)
-                                            .map((item, index) => (
-                                                <Col
-                                                    xs={12}
-                                                    sm={8}
-                                                    md={6}
-                                                    key={index}
-                                                >
-                                                    <div className="group flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-2 transition-all duration-300 hover:border-white/20 hover:bg-white/10">
-                                                        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#E50914]/20 to-blue-600/20 text-xs font-bold text-white/60">
-                                                            {index + 1}
-                                                        </div>
-                                                        <span className="flex-1 truncate text-sm text-white/80 group-hover:text-white">
-                                                            {item}
-                                                        </span>
-                                                        <HeartOutlined className="text-white/20 transition-colors group-hover:text-[#E50914]" />
-                                                    </div>
-                                                </Col>
-                                            ))}
-                                    </Row>
-                                </div>
-                            </Col>
-
-                            {/* AI Pick & Curate Section */}
-                            <Col xs={24} lg={8}>
-                                <div className="space-y-4">
-                                    {/* AI Pick Card */}
-                                    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-purple-600/20 to-blue-600/20 p-6 backdrop-blur-sm">
-                                        <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-purple-600/30 blur-2xl" />
-
-                                        <div className="relative">
-                                            <div className="mb-2 flex items-center gap-2">
-                                                <span className="text-2xl">
-                                                    🤖
-                                                </span>
-                                                <Badge
-                                                    count="AI PICK"
-                                                    style={{
-                                                        backgroundColor:
-                                                            '#E50914',
-                                                    }}
-                                                />
-                                            </div>
-                                            <Paragraph className="!mb-3 !text-white/80">
-                                                Based on your watchlist, we
-                                                think you'll love
-                                            </Paragraph>
-                                            <Title
-                                                level={4}
-                                                className="!mb-2 !text-white"
-                                            >
-                                                "Interstellar 2: Echoes"
-                                            </Title>
-                                            <div className="flex items-center gap-3 text-sm text-white/40">
-                                                <span className="flex items-center gap-1">
-                                                    <StarOutlined className="text-yellow-400" />
-                                                    4.9
-                                                </span>
-                                                <span>•</span>
-                                                <span>Coming 2025</span>
-                                            </div>
-                                            <div className="mt-4 flex gap-2">
-                                                <Button
-                                                    type="primary"
-                                                    size="small"
-                                                    className="!border-[#E50914] !bg-[#E50914]"
-                                                >
-                                                    Add to list
-                                                </Button>
-                                                <Button
-                                                    size="small"
-                                                    className="!border-white/20 !bg-white/10 !text-white"
-                                                >
-                                                    Learn More
-                                                </Button>
-                                            </div>
+                                        <Text className="text-base font-semibold text-white/80 group-hover:text-white">
+                                            {category.name}
+                                        </Text>
+                                        <div className="mt-2 text-xs text-white/30">
+                                            {Math.floor(
+                                                Math.random() * 100 + 50,
+                                            )}{' '}
+                                            titles
                                         </div>
+                                        <div className="mt-3 h-0.5 w-0 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-all duration-500 group-hover:w-full" />
                                     </div>
-
-                                    {/* Curate Section */}
-                                    <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                                        <div className="flex items-start gap-3">
-                                            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#E50914]/20 to-orange-600/20 text-2xl">
-                                                🎨
-                                            </div>
-                                            <div className="flex-1">
-                                                <Title
-                                                    level={5}
-                                                    className="!mb-1 !text-white"
-                                                >
-                                                    Curate Your Cinematic World
-                                                </Title>
-                                                <Paragraph className="!mb-3 !text-sm !text-white/50">
-                                                    Share your favorite
-                                                    collections with friends or
-                                                    keep them private. Cinoplex
-                                                    Pro lets you collaborate on
-                                                    watchlists for the ultimate
-                                                    movie night.
-                                                </Paragraph>
-                                                <Button className="!border-[#E50914] !text-[#E50914] hover:!bg-[#E50914] hover:!text-white">
-                                                    Start Collaborating →
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Col>
+                                </Col>
+                            ))}
                         </Row>
                     </div>
                 </section>
-
                 {/* Trending Carousel */}
                 <section className="px-4 py-12 md:px-8 lg:px-16">
                     <div className="container mx-auto">

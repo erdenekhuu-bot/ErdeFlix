@@ -15,6 +15,8 @@ createInertiaApp({
             case name === 'welcome' ||
                 name === 'category' ||
                 name === 'append' ||
+                name === 'profiles' ||
+                name === 'player' ||
                 name === 'favorite':
                 return null;
             case name.startsWith('auth/'):
