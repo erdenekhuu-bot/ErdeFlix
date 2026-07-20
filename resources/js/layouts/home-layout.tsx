@@ -1,3 +1,4 @@
+import { Head, Link, usePage } from '@inertiajs/react';
 import {
     Layout,
     Flex,
@@ -10,7 +11,6 @@ import {
     Row,
     Col,
 } from 'antd';
-import { Head, Link, usePage } from '@inertiajs/react';
 import {
     dashboard,
     login,
@@ -18,7 +18,7 @@ import {
     list,
     home,
     append,
-    favorite,
+
 } from '@/routes';
 
 export default function HomeLayout({
@@ -41,6 +41,7 @@ export default function HomeLayout({
 
     const getActiveKey = () => {
         const path = String(url).split('?')[0];
+
         switch (path) {
             case '/':
                 return '1';
@@ -48,8 +49,6 @@ export default function HomeLayout({
                 return '2';
             case '/append':
                 return '3';
-            case '/favorite':
-                return '4';
             default:
                 return '';
         }
@@ -121,14 +120,6 @@ export default function HomeLayout({
                                     label: (
                                         <Link href={append()}>
                                             Шинээр нэмэгдсэн
-                                        </Link>
-                                    ),
-                                },
-                                {
-                                    key: '4',
-                                    label: (
-                                        <Link href={favorite()}>
-                                            Их үзэлттэй
                                         </Link>
                                     ),
                                 },

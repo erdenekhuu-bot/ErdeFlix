@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/')->group(function(){
     Route::inertia('', 'welcome', [
         'banner' => asset('asset/screen.png'),
-        
         'url'=>'/',
         'records' => array(
             array(  'title' => 'Demo Movie 1',
@@ -70,7 +69,8 @@ Route::prefix('/')->group(function(){
         )
     ])->name('list');
     Route::inertia('/append','append',['url'=>'/append'])->name('append');
-    Route::inertia('/favorite','favorite',['url'=>'/favorite'])->name('favorite');
+    Route::inertia('/profiles','profiles')->name('profiles');
+    Route::inertia('/player','player')->name('player');
 });
 
 
