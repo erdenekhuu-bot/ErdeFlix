@@ -14,7 +14,7 @@ use Illuminate\Support\Carbon;
 use Laravel\Fortify\Contracts\PasskeyUser;
 use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-
+use Spatie\Permission\Traits\HasRoles;
 /**
  * @property int $id
  * @property string $name
@@ -33,7 +33,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 class User extends Authenticatable implements PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable,HasRoles;
 
     /**
      * Get the attributes that should be cast.
@@ -47,11 +47,5 @@ class User extends Authenticatable implements PasskeyUser
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
-    }
-    protected $with = ['comments'];
-
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class,'user_id','id');
     }
 }

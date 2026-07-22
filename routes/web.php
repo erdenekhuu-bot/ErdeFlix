@@ -69,13 +69,19 @@ Route::prefix('/')->group(function(){
         )
     ])->name('list');
     Route::inertia('/append','append',['url'=>'/append'])->name('append');
-    Route::inertia('/profiles','profiles')->name('profiles');
     Route::inertia('/player','player')->name('player');
 });
 
 
-Route::middleware(['auth', 'verified'])->group(function () {
+//Route::middleware(['auth', 'verified'])->group(function () {
+//    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+//});
+Route::middleware(['auth', 'verified', 'permission:access admin dashboard'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
+});
+
+Route::middleware(['auth', 'verified', 'permission:access user dashboard'])->group(function () {
+    Route::inertia('/profiles','profiles')->name('profiles');
 });
 
 require __DIR__.'/settings.php';
