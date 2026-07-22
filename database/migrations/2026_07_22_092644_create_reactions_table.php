@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('reactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('movie_id')->constrained('movies')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('title',50)->unique();
-            $table->string('comment')->nullable();
-        });
-
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('counts')->default(0);
+            $table->enum('type', ['like', 'dislike','comment'])->default('like');
+            $table->integer('like')->default(0);
+            $table->integer('dislike')->default(0);
+            $table->string('comment')->default('');
+            $table->timestamps();
         });
     }
 
@@ -29,9 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('counts');
-        });
+        Schema::dropIfExists('reactions');
     }
 };
