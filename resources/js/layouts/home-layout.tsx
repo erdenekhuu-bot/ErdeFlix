@@ -1,35 +1,9 @@
-import { Head, Link, usePage } from '@inertiajs/react';
-import {
-    Layout,
-    Flex,
-    Menu,
-    Typography,
-    Input,
-    ConfigProvider,
-    theme,
-    Button,
-    Row,
-    Col,
-} from 'antd';
-import {
-    dashboard,
-    login,
-    register,
-    list,
-    home,
-    append,
+import { Head, Link, usePage,router } from '@inertiajs/react';
+import { Layout, Flex, Menu, Typography, Input, ConfigProvider, theme, Button, Row, Col} from 'antd';
+import { dashboard, login, register, list, home, append } from '@/routes';
 
-} from '@/routes';
-
-export default function HomeLayout({
-    children,
-    title,
-}: {
-    children: React.ReactNode;
-    title: string;
-}) {
+export default function HomeLayout({ children, title}: { children: React.ReactNode; title: string; }) {
     const { auth, url } = usePage().props;
-    console.log(auth)
 
     const darkTheme = {
         background: '#121212',
@@ -39,7 +13,6 @@ export default function HomeLayout({
         text: '#FFFFFF',
         modalBackground: '#222222',
     };
-
     const getActiveKey = () => {
         const path = String(url).split('?')[0];
 
@@ -54,6 +27,16 @@ export default function HomeLayout({
                 return '';
         }
     };
+
+    const handleLogout = ()=>{
+        router.post('/logout',{},{
+            preserveState:false,
+            preserveScroll:false,
+            onSuccess:()=>{
+
+            }
+        })
+    }
 
     return (
         <ConfigProvider
@@ -134,9 +117,19 @@ export default function HomeLayout({
                         />
                         <Flex gap={12} align="center">
                             {auth.user ? (
-                                <Link href={dashboard()}>
-                                    <Button type="primary">Dashboard</Button>
-                                </Link>
+                                <Flex align={'center'} gap={8}>
+                                    <Link href={dashboard()}>
+                                        <Button type="primary">
+                                            Dashboard
+                                        </Button>
+                                    </Link>
+                                    <Button
+                                        className="!text-white hover:!bg-white/10"
+                                        onClick={handleLogout}
+                                    >
+                                        Log out
+                                    </Button>
+                                </Flex>
                             ) : (
                                 <>
                                     <Link href={login()}>

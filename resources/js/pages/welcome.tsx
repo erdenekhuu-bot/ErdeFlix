@@ -1,53 +1,16 @@
 import { usePage } from '@inertiajs/react';
-import {
-    Flex,
-    Button,
-    Image,
-    Row,
-    Col,
-    Typography,
-    Divider,
-    Space,
-    Tag,
-    Badge,
-    Avatar,
-    Progress,
-    Carousel,
-} from 'antd';
+import { Flex, Button, Image, Row, Col, Typography, Tag, Badge } from 'antd';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { FeaturedCard } from '@/components/card/FeaturedCard';
 import HomeLayout from '@/layouts/home-layout';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination, EffectFade } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
-import {
-    ClockCircleOutlined,
-    EyeOutlined,
-    PlayCircleOutlined,
-    StarOutlined,
-    FireOutlined,
-    RightOutlined,
-    CalendarOutlined,
-    TagOutlined,
-    ThunderboltOutlined,
-    RocketOutlined,
-    GlobalOutlined,
-    HeartOutlined,
-    HeartFilled,
-    ShareAltOutlined,
-    DownloadOutlined,
-    SoundOutlined,
-    CustomerServiceOutlined,
-    TrophyOutlined,
-    CrownOutlined,
-    VideoCameraOutlined,
-    MenuOutlined,
-    CheckCircleOutlined,
-} from '@ant-design/icons';
+import { PlayCircleOutlined, StarOutlined, RightOutlined, HeartOutlined } from '@ant-design/icons';
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Paragraph } = Typography;
 
 export default function Welcome() {
     const { banner, records } = usePage<{
@@ -63,16 +26,6 @@ export default function Welcome() {
 
     const featuredItems = records.slice(0, 4);
     const mainFeature = records[0];
-
-    // Mock trending categories
-    const trendingTopics = [
-        { name: 'Action', icon: '⚡', color: '#E50914' },
-        { name: 'Sci-Fi', icon: '🚀', color: '#00d4ff' },
-        { name: 'Drama', icon: '🎭', color: '#ff6b6b' },
-        { name: 'Comedy', icon: '😂', color: '#ffd93d' },
-        { name: 'Thriller', icon: '🔪', color: '#6c5ce7' },
-        { name: 'Romance', icon: '❤️', color: '#fd79a8' },
-    ];
 
     const topRated = records.slice(0, 6);
 

@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/')->group(function(){
-    $user = auth()->user();
     Route::inertia('', 'welcome', [
         'banner' => asset('asset/screen.png'),
         'url'=>'/',
@@ -26,14 +25,7 @@ Route::prefix('/')->group(function(){
                 'kind' => 'Movie',
                 'date' => '2026-07-19'
             )
-        ),
-        'auth' => $user ? [
-            'user' => $user,
-            'permissions' => $user->getAllPermissions()->pluck('name'),
-            'roles' => $user->getRoleNames(),
-            'is_admin' => $user->hasPermissionTo('access admin dashboard'),
-            'is_customer' => $user->hasPermissionTo('access user dashboard'),
-        ] : null,
+        )
     ])->name('home');
     Route::inertia('/list','category',[
         'url'=>'/list',
@@ -80,10 +72,6 @@ Route::prefix('/')->group(function(){
     Route::inertia('/player','player')->name('player');
 });
 
-
-//Route::middleware(['auth', 'verified'])->group(function () {
-//    Route::inertia('dashboard', 'dashboard')->name('dashboard');
-//});
 Route::middleware(['auth', 'verified', 'permission:access admin dashboard'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
 });
