@@ -72,12 +72,6 @@ Route::prefix('/')->group(function(){
     Route::inertia('/player','player')->name('player');
 });
 
-Route::middleware(['auth', 'verified', 'permission:access admin dashboard'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
-});
-
-Route::middleware(['auth', 'verified', 'permission:access user dashboard'])->group(function () {
-    Route::inertia('/profiles','profiles')->name('profiles');
-});
-
 require __DIR__.'/settings.php';
+require __DIR__.'/board.php';
+require __DIR__.'/customer.php';

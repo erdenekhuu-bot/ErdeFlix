@@ -1,17 +1,19 @@
 import { Head, Link, usePage,router } from '@inertiajs/react';
 import { Layout, Flex, Menu, Typography, Input, ConfigProvider, theme, Button, Row, Col} from 'antd';
 import { dashboard, login, register, list, home, append } from '@/routes';
+
+export const darkTheme = {
+    background: '#121212',
+    surface: '#1E1E1E',
+    surfaceLight: '#2D2D2D',
+    border: '#404040',
+    text: '#FFFFFF',
+    modalBackground: '#222222',
+};
 export default function HomeLayout({ children, title}: { children: React.ReactNode; title: string; }) {
     const { auth, url } = usePage().props;
 
-    const darkTheme = {
-        background: '#121212',
-        surface: '#1E1E1E',
-        surfaceLight: '#2D2D2D',
-        border: '#404040',
-        text: '#FFFFFF',
-        modalBackground: '#222222',
-    };
+
     const getActiveKey = () => {
         const path = String(url).split('?')[0];
 

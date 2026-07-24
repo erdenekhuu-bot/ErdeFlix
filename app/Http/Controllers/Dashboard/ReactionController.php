@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class VideoController extends Controller
+class ReactionController extends Controller
 {
     public function list():Response {
-        return Inertia::render('dashboard/video/List');
+        return Inertia::render('dashboard/reaction/List');
     }
 }
