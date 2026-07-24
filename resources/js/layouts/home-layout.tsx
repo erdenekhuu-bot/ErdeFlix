@@ -29,6 +29,7 @@ export default function HomeLayout({
     title: string;
 }) {
     const { auth, url } = usePage().props;
+    console.log(auth)
 
     const darkTheme = {
         background: '#121212',
