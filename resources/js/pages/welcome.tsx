@@ -8,7 +8,12 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
-import { PlayCircleOutlined, StarOutlined, RightOutlined, HeartOutlined } from '@ant-design/icons';
+import {
+    PlayCircleOutlined,
+    StarOutlined,
+    RightOutlined,
+    HeartOutlined,
+} from '@ant-design/icons';
 
 const { Title, Paragraph } = Typography;
 
@@ -45,7 +50,6 @@ export default function Welcome() {
 
                     <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/30 to-transparent" />
 
-
                     {/* Animated Gradient Orbs */}
                     <div className="absolute -top-40 -right-40 h-[600px] w-[600px] animate-pulse rounded-full bg-purple-600/20 blur-3xl" />
                     <div className="absolute -bottom-40 -left-40 h-[600px] w-[600px] animate-pulse rounded-full bg-blue-600/20 blur-3xl delay-1000" />
@@ -55,14 +59,11 @@ export default function Welcome() {
                     <div className="absolute inset-0 opacity-5">
                         <div className="h-full w-full bg-[repeating-linear-gradient(0deg,transparent,transparent_3px,rgba(255,255,255,0.02)_3px,rgba(255,255,255,0.02)_6px)]" />
                     </div>
-
-
                 </div>
 
                 <div className="absolute inset-0 flex items-center">
                     <div className="container mx-auto px-4 md:px-8 lg:px-16">
                         <div className="max-w-4xl">
-
                             {/* Main Title with Glitch Effect */}
                             <div className="animate-fade-in-up animation-delay-200 space-y-2">
                                 <div className="relative">
@@ -115,11 +116,9 @@ export default function Welcome() {
                                     Add to List
                                 </Button>
                             </Flex>
-
                         </div>
                     </div>
                 </div>
-
             </section>
 
             {/* Trending Now with 3D Effect */}
@@ -198,7 +197,8 @@ export default function Welcome() {
                                 <Title
                                     level={2}
                                     className="!mb-0 !text-3xl !font-bold !text-white"
-                                >Featured Content
+                                >
+                                    Featured Content
                                 </Title>
                             </div>
                         </div>
@@ -231,7 +231,10 @@ export default function Welcome() {
                                     <div className="absolute top-6 left-6">
                                         <Badge
                                             count="⭐ FEATURED"
-                                            style={{ backgroundColor: 'rgba(229,9,20,0.9)' }}
+                                            style={{
+                                                backgroundColor:
+                                                    'rgba(229,9,20,0.9)',
+                                            }}
                                         />
                                     </div>
 
@@ -383,7 +386,8 @@ export default function Welcome() {
                                 <Title
                                     level={2}
                                     className="!mb-0 !text-3xl !font-bold !text-white"
-                                >Top Rated
+                                >
+                                    Top Rated
                                 </Title>
                             </div>
                         </div>
@@ -462,8 +466,6 @@ export default function Welcome() {
                     </Row>
                 </div>
             </section>
-
-
         </HomeLayout>
     );
 }

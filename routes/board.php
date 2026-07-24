@@ -8,6 +8,8 @@ Route::middleware(['auth', 'verified', 'permission:access admin dashboard'])->gr
     Route::prefix('dashboard')->group(function () {
         Route::get('',[IndexController::class,'info'])->name('dashboard');
         Route::get('categories', [CategoryController::class,'list'])->name('categories');
+        Route::post('categorycreate',[CategoryController::class,'create'])->name('categorycreate');
+        Route::delete('categorydelete/{id}',[CategoryController::class, 'destroy'])->name('categorydelete');
         Route::get('users', [UserController::class,'list'])->name('users');
         Route::get('movies', [MovieController::class,'list'])->name('movies');
         Route::get('videos', [VideoController::class,'list'])->name('videos');
