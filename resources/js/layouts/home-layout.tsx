@@ -1,7 +1,6 @@
 import { Head, Link, usePage,router } from '@inertiajs/react';
 import { Layout, Flex, Menu, Typography, Input, ConfigProvider, theme, Button, Row, Col} from 'antd';
 import { dashboard, login, register, list, home, append } from '@/routes';
-
 export default function HomeLayout({ children, title}: { children: React.ReactNode; title: string; }) {
     const { auth, url } = usePage().props;
 
