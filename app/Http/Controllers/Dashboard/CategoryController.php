@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,7 @@ class CategoryController extends Controller
         return Inertia::render('dashboard/category/List',['list'=>$list]);
     }
 
-    public function create(Request $request) {
+    public function create(Request $request):RedirectResponse {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'description' => 'required|string|max:255',
