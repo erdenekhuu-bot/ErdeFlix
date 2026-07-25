@@ -27,8 +27,10 @@ import {
     AppstoreOutlined,
     UnorderedListOutlined,
 } from '@ant-design/icons';
+import { router, usePage, Link } from '@inertiajs/react';
+import { player } from '@/routes';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 const { Option } = Select;
 
 export default function Appended() {
@@ -40,6 +42,8 @@ export default function Appended() {
     const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
     const [yearRange, setYearRange] = useState<[number, number]>([2020, 2024]);
     const [ratingRange, setRatingRange] = useState<[number, number]>([4, 5]);
+
+    const { list } = usePage<{ list: any }>().props;
 
     // Mock data for new movies
     const newMovies = [
@@ -262,48 +266,45 @@ export default function Appended() {
     ];
 
     // Filter and sort logic
-    const filteredMovies = newMovies
-        .filter((movie) => {
-            const matchesSearch = movie.title
-                .toLowerCase()
-                .includes(searchText.toLowerCase());
-            const matchesGenre =
-                selectedGenres.length === 0 ||
-                selectedGenres.includes(movie.genre);
-            return (
-                matchesSearch && matchesGenre
-            );
-        })
-        .sort((a, b) => {
-            switch (sortBy) {
-                case 'newest':
-                    return (
-                        new Date(b.addedDate).getTime() -
-                        new Date(a.addedDate).getTime()
-                    );
-                case 'oldest':
-                    return (
-                        new Date(a.addedDate).getTime() -
-                        new Date(b.addedDate).getTime()
-                    );
-                case 'rating':
-                    return parseFloat(b.rating) - parseFloat(a.rating);
-                case 'views':
-                    return (
-                        parseInt(b.views.replace('K', ''))
-                    );
-                default:
-                    return 0;
-            }
-        });
+    // const filteredMovies = newMovies
+    //     .filter((movie) => {
+    //         const matchesSearch = movie.title
+    //             .toLowerCase()
+    //             .includes(searchText.toLowerCase());
+    //         const matchesGenre =
+    //             selectedGenres.length === 0 ||
+    //             selectedGenres.includes(movie.genre);
+    //         return matchesSearch && matchesGenre;
+    //     })
+    //     .sort((a, b) => {
+    //         switch (sortBy) {
+    //             case 'newest':
+    //                 return (
+    //                     new Date(b.addedDate).getTime() -
+    //                     new Date(a.addedDate).getTime()
+    //                 );
+    //             case 'oldest':
+    //                 return (
+    //                     new Date(a.addedDate).getTime() -
+    //                     new Date(b.addedDate).getTime()
+    //                 );
+    //             case 'rating':
+    //                 return parseFloat(b.rating) - parseFloat(a.rating);
+    //             case 'views':
+    //                 return parseInt(b.views.replace('K', ''));
+    //             default:
+    //                 return 0;
+    //         }
+    //     });
 
     // Pagination
-    const pageSize = 8;
-    const paginatedMovies = filteredMovies.slice(
-        (currentPage - 1) * pageSize,
-        currentPage * pageSize,
-    );
+    // const pageSize = 8;
+    // const paginatedMovies = filteredMovies.slice(
+    //     (currentPage - 1) * pageSize,
+    //     currentPage * pageSize,
+    // );
 
+    const filteredMovies = [];
 
     return (
         <HomeLayout title="New Appended Movies">
@@ -319,25 +320,15 @@ export default function Appended() {
                                     className="!w-40"
                                     dropdownClassName="dark-dropdown"
                                 >
-                                    <Option value="newest">
-                                        Newest First
-                                    </Option>
-                                    <Option value="oldest">
-                                        Oldest First
-                                    </Option>
-                                    <Option value="rating">
-                                        Top Rated
-                                    </Option>
-                                    <Option value="views">
-                                        Most Views
-                                    </Option>
+                                    <Option value="newest">Newest First</Option>
+                                    <Option value="oldest">Oldest First</Option>
+                                    <Option value="rating">Top Rated</Option>
+                                    <Option value="views">Most Views</Option>
                                 </Select>
                                 <Button
                                     icon={<FilterOutlined />}
                                     className="!border-white/20 !bg-white/10 !text-white"
-                                    onClick={() =>
-                                        setFilterDrawer(true)
-                                    }
+                                    onClick={() => setFilterDrawer(true)}
                                 >
                                     Filters
                                 </Button>
@@ -345,16 +336,12 @@ export default function Appended() {
                                     <Button
                                         icon={<AppstoreOutlined />}
                                         className={`${viewMode === 'grid' ? '!bg-[#E50914] !text-white' : '!border-white/20 !bg-white/10 !text-white'}`}
-                                        onClick={() =>
-                                            setViewMode('grid')
-                                        }
+                                        onClick={() => setViewMode('grid')}
                                     />
                                     <Button
                                         icon={<UnorderedListOutlined />}
                                         className={`${viewMode === 'list' ? '!bg-[#E50914] !text-white' : '!border-white/20 !bg-white/10 !text-white'}`}
-                                        onClick={() =>
-                                            setViewMode('list')
-                                        }
+                                        onClick={() => setViewMode('list')}
                                     />
                                 </Button.Group>
                             </Flex>
@@ -366,13 +353,13 @@ export default function Appended() {
             {/* Movies Grid/List */}
             <section className="px-4 py-8 md:px-8 lg:px-16">
                 <div className="container mx-auto">
-                    {filteredMovies.length === 0 ? (
+                    {list?.data.length === 0 ? (
                         <div className="rounded-2xl border border-white/10 bg-white/5 p-12 text-center">
                             <Empty
                                 image={Empty.PRESENTED_IMAGE_SIMPLE}
                                 description={
                                     <Text className="text-white/60">
-                                        No movies found matching your criteria
+                                        Одоогоор кино нэмэгдээгүй байна
                                     </Text>
                                 }
                             >
@@ -392,7 +379,7 @@ export default function Appended() {
                         </div>
                     ) : viewMode === 'grid' ? (
                         <Row gutter={[16, 16]}>
-                            {paginatedMovies.map((movie) => (
+                            {list?.data.map((movie: any) => (
                                 <Col
                                     xs={24}
                                     sm={12}
@@ -437,23 +424,21 @@ export default function Appended() {
                                                         </Text>
                                                     </Flex>
                                                 </div>
-                                                <Button
-                                                    type="primary"
-                                                    shape="circle"
-                                                    icon={
-                                                        <PlayCircleOutlined />
-                                                    }
-                                                    className="absolute !h-14 !w-14 !bg-[#E50914] !text-2xl opacity-0 transition-opacity group-hover:opacity-100"
-                                                />
-                                                <div className="absolute right-3 bottom-3 left-3 flex items-end justify-between">
 
-                                                    <div className="flex items-center gap-1.5 rounded-full bg-black/60 px-2 py-1">
-                                                        <EyeOutlined className="text-xs text-white/60" />
-                                                        <Text className="text-xs text-white/80">
-                                                            {movie.views}
-                                                        </Text>
-                                                    </div>
-                                                </div>
+                                                <Link
+                                                    href={player({
+                                                        id: movie.video_id,
+                                                    })}
+                                                >
+                                                    <Button
+                                                        type="primary"
+                                                        shape="circle"
+                                                        icon={
+                                                            <PlayCircleOutlined />
+                                                        }
+                                                        className="absolute z-10 !h-14 !w-14 !bg-[#E50914] !text-2xl opacity-0 transition-opacity group-hover:opacity-100"
+                                                    />
+                                                </Link>
                                             </div>
                                             <div className="p-4">
                                                 <Flex
@@ -462,7 +447,7 @@ export default function Appended() {
                                                 >
                                                     <div className="min-w-0 flex-1">
                                                         <Text className="block truncate font-medium text-white">
-                                                            {movie.title}
+                                                            {movie.name}
                                                         </Text>
                                                         <Flex
                                                             gap={4}
@@ -478,9 +463,8 @@ export default function Appended() {
                                                         <div className="mt-2 flex items-center gap-2">
                                                             <ClockCircleOutlined className="text-xs text-white/30" />
                                                             <Text className="text-xs text-white/30">
-                                                                Added{' '}
                                                                 {
-                                                                    movie.addedDate
+                                                                    movie.movie_created_date
                                                                 }
                                                             </Text>
                                                         </div>
@@ -505,8 +489,9 @@ export default function Appended() {
                             ))}
                         </Row>
                     ) : (
+                        // 1
                         <div className="space-y-4">
-                            {paginatedMovies.map((movie) => (
+                            {/* {paginatedMovies.map((movie) => (
                                 <div
                                     key={movie.id}
                                     className="group rounded-2xl border border-white/5 bg-white/5 p-6 transition-all hover:border-white/20 hover:bg-white/10"
@@ -580,12 +565,13 @@ export default function Appended() {
                                         </Col>
                                     </Row>
                                 </div>
-                            ))}
+                            ))} */}
+                            2
                         </div>
                     )}
 
                     {/* Pagination */}
-                    {filteredMovies.length > 0 && (
+                    {/* {filteredMovies.length > 0 && (
                         <div className="mt-8 flex justify-center">
                             <Pagination
                                 current={currentPage}
@@ -596,7 +582,7 @@ export default function Appended() {
                                 className="custom-pagination"
                             />
                         </div>
-                    )}
+                    )} */}
                 </div>
             </section>
 

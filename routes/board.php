@@ -12,6 +12,7 @@ Route::middleware(['auth', 'verified', 'permission:access admin dashboard'])->gr
         Route::delete('categorydelete/{id}',[CategoryController::class, 'destroy'])->name('categorydelete');
         Route::get('users', [UserController::class,'list'])->name('users');
         Route::get('movies', [MovieController::class,'list'])->name('movies');
+        Route::get('formmovie',[MovieController::class,'formpage'])->name('formmovie');
         Route::post('moviescreate',[MovieController::class,'create'])->name('moviescreate');
         Route::get('videos', [VideoController::class,'list'])->name('videos');
         Route::get('reactions', [ReactionController::class,'list'])->name('reactions');

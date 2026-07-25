@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Home;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Video;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use App\Models\Video;
+use Illuminate\Support\Facades\DB;
 
-class DemoController extends Controller
+class PlayerController extends Controller
 {
-    public function watch($id) {
+     public function watch($id) {
         $movie = Video::find($id);
 
         if ($movie) {
@@ -17,7 +19,8 @@ class DemoController extends Controller
         } else {
             return Inertia::render('player', [
                 'detail' => $movie,
-                'error' => 'Movie or video not found'
+                'error' => 'Movie or video not found',
+                'movie'=>$record
             ]);
         }
         return Inertia::render('player', ['hlsUrl' => $hlsUrl, 'detail' => $movie]);

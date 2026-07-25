@@ -46,8 +46,8 @@ export default function Player({ hlsUrl }: DemoProps) {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const hlsRef = useRef<Hls | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const { detail } = usePage<any>().props;
-    const url = import.meta.env.VITE_APP_URL;
+    const { record } = usePage<any>().props;
+    console.log(record);
 
     useEffect(() => {
         const video = videoRef.current;
