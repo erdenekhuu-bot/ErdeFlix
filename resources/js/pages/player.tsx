@@ -24,18 +24,131 @@ import {
     Avatar,
     Input,
     Progress,
-
 } from 'antd';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import HomeLayout from '@/layouts/home-layout';
+import Hls from 'hls.js';
+import { usePage } from '@inertiajs/react';
 
 const { Title, Text } = Typography;
 
-export default function Player() {
+type DemoProps = {
+    hlsUrl: string | null;
+};
+
+export default function Player({ hlsUrl }: DemoProps) {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
-    const [progress, setProgress] = useState(45);
+    const [progress, setProgress] = useState(0);
+    const [currentTime, setCurrentTime] = useState('0:00:00');
+    const [duration, setDuration] = useState('0:00:00');
     const [comment, setComment] = useState('');
+    const videoRef = useRef<HTMLVideoElement | null>(null);
+    const hlsRef = useRef<Hls | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const { detail } = usePage<any>().props;
+    const url = import.meta.env.VITE_APP_URL;
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video || !hlsUrl) return;
+
+        if (Hls.isSupported()) {
+            const hls = new Hls({
+                debug: true,
+                enableWorker: false,
+                lowLatencyMode: false,
+            });
+            hlsRef.current = hls;
+
+            hls.loadSource(hlsUrl);
+            hls.attachMedia(video);
+
+            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                console.log('HLS: Manifest good, levels:', hls.levels);
+                video.play().catch((e) => console.log('Play blocked:', e));
+            });
+
+            hls.on(Hls.Events.ERROR, (event, data) => {
+                console.error('HLS detailed error:', data);
+                setError(
+                    `${data.type} → ${data.details}${data.fatal ? ' (fatal)' : ''}`,
+                );
+            });
+
+            return () => hls.destroy();
+        } else {
+            setError('No HLS support at all');
+        }
+    }, [hlsUrl]);
+
+    // Update progress and time
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const updateProgress = () => {
+            if (video.duration) {
+                const percent = (video.currentTime / video.duration) * 100;
+                setProgress(percent);
+                setCurrentTime(formatTime(video.currentTime));
+                setDuration(formatTime(video.duration));
+            }
+        };
+
+        const handlePlay = () => setIsPlaying(true);
+        const handlePause = () => setIsPlaying(false);
+        const handleEnded = () => setIsPlaying(false);
+
+        video.addEventListener('timeupdate', updateProgress);
+        video.addEventListener('play', handlePlay);
+        video.addEventListener('pause', handlePause);
+        video.addEventListener('ended', handleEnded);
+
+        return () => {
+            video.removeEventListener('timeupdate', updateProgress);
+            video.removeEventListener('play', handlePlay);
+            video.removeEventListener('pause', handlePause);
+            video.removeEventListener('ended', handleEnded);
+        };
+    }, []);
+
+    const formatTime = (seconds: number): string => {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const secs = Math.floor(seconds % 60);
+        if (hours > 0) {
+            return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        return `${minutes}:${secs.toString().padStart(2, '0')}`;
+    };
+
+    const togglePlay = () => {
+        const video = videoRef.current;
+        if (!video) return;
+        if (video.paused) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    };
+
+    const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const video = videoRef.current;
+        if (!video || !video.duration) return;
+        const value = parseFloat(e.target.value);
+        const time = (value / 100) * video.duration;
+        video.currentTime = time;
+        setProgress(value);
+    };
+
+    const handleFullscreen = () => {
+        const video = videoRef.current;
+        if (!video) return;
+        if (video.requestFullscreen) {
+            video.requestFullscreen();
+        }
+    };
 
     // Mock data
     const chatMessages = [
@@ -92,16 +205,35 @@ export default function Player() {
                     <div className="overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-gray-900 to-black">
                         {/* Video Player Area */}
                         <div className="relative flex aspect-video items-center justify-center bg-black/90">
-                            <div className="absolute inset-0">
-                                <Image
-                                    preview={false}
-                                    src="https://picsum.photos/1920/1080?random=1"
-                                    alt="Movie Background"
-                                    className="!h-full !w-full !object-cover"
-                                    style={{ objectFit: 'cover' }}
-                                />
-                                <div className="absolute inset-0 bg-black/40" />
-                            </div>
+                            {/* Actual Video Element */}
+                            <video
+                                ref={videoRef}
+                                className="!h-full !w-full !object-contain"
+                                style={{ objectFit: 'contain' }}
+                                playsInline
+                                poster="https://picsum.photos/1920/1080?random=1"
+                            >
+                                {!Hls.isSupported() && hlsUrl && (
+                                    <source
+                                        src={hlsUrl}
+                                        type="application/vnd.apple.mpegurl"
+                                    />
+                                )}
+                            </video>
+
+                            {/* Video Poster/Background when not playing */}
+                            {!isPlaying && (
+                                <div className="absolute inset-0">
+                                    <Image
+                                        preview={false}
+                                        src="https://picsum.photos/1920/1080?random=1"
+                                        alt="Movie Background"
+                                        className="!h-full !w-full !object-cover"
+                                        style={{ objectFit: 'cover' }}
+                                    />
+                                    <div className="absolute inset-0 bg-black/40" />
+                                </div>
+                            )}
 
                             {/* Player Controls Overlay */}
                             <div className="absolute inset-0 flex items-center justify-center">
@@ -116,7 +248,7 @@ export default function Player() {
                                         )
                                     }
                                     className="!h-20 !w-20 !border-[#E50914] !bg-[#E50914] !text-4xl shadow-2xl transition-all hover:!scale-110"
-                                    onClick={() => setIsPlaying(!isPlaying)}
+                                    onClick={togglePlay}
                                 />
                             </div>
 
@@ -124,22 +256,26 @@ export default function Player() {
                             <div className="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/95 to-transparent p-6">
                                 {/* Progress Bar */}
                                 <div className="mb-4">
-                                    <Progress
-                                        percent={progress}
-                                        showInfo={false}
-                                        strokeColor="#E50914"
-                                        trailColor="rgba(255,255,255,0.2)"
-                                        className="!m-0"
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max="100"
+                                        value={progress}
+                                        onChange={handleSeek}
+                                        className="h-1 w-full cursor-pointer appearance-none rounded-lg bg-white/20"
+                                        style={{
+                                            accentColor: '#E50914',
+                                        }}
                                     />
                                     <Flex
                                         justify="space-between"
                                         className="mt-1"
                                     >
                                         <Text className="text-xs text-white/40">
-                                            1:23:45
+                                            {currentTime}
                                         </Text>
                                         <Text className="text-xs text-white/40">
-                                            2:15:00
+                                            {duration}
                                         </Text>
                                     </Flex>
                                 </div>
@@ -157,27 +293,42 @@ export default function Player() {
                                                 )
                                             }
                                             className="!text-2xl !text-white hover:!text-[#E50914]"
-                                            onClick={() =>
-                                                setIsPlaying(!isPlaying)
-                                            }
+                                            onClick={togglePlay}
                                         />
                                         <Button
                                             type="text"
                                             icon={<BackwardOutlined />}
                                             className="!text-lg !text-white hover:!text-[#E50914]"
+                                            onClick={() => {
+                                                const video = videoRef.current;
+                                                if (video) {
+                                                    video.currentTime =
+                                                        Math.max(
+                                                            0,
+                                                            video.currentTime -
+                                                                10,
+                                                        );
+                                                }
+                                            }}
                                         />
                                         <Button
                                             type="text"
                                             icon={<ForwardOutlined />}
                                             className="!text-lg !text-white hover:!text-[#E50914]"
-                                        />
-                                        <Button
-                                            type="text"
-                                            icon={<ForwardOutlined />}
-                                            className="!text-lg !text-white hover:!text-[#E50914]"
+                                            onClick={() => {
+                                                const video = videoRef.current;
+                                                if (video && video.duration) {
+                                                    video.currentTime =
+                                                        Math.min(
+                                                            video.duration,
+                                                            video.currentTime +
+                                                                10,
+                                                        );
+                                                }
+                                            }}
                                         />
                                         <Text className="text-sm text-white/60">
-                                            1:23:45 / 2:15:00
+                                            {currentTime} / {duration}
                                         </Text>
                                     </Flex>
                                     <Flex gap={8} align="center">
@@ -190,6 +341,7 @@ export default function Player() {
                                             type="text"
                                             icon={<FullscreenOutlined />}
                                             className="!text-white hover:!text-[#E50914]"
+                                            onClick={handleFullscreen}
                                         />
                                     </Flex>
                                 </Flex>
@@ -260,7 +412,6 @@ export default function Player() {
                                 </Flex>
                             </div>
                         </div>
-
 
                         {/* Live Chat Section */}
                         <div className="border-t border-white/10 bg-white/5 p-6">
@@ -450,6 +601,25 @@ export default function Player() {
                 .custom-scrollbar::-webkit-scrollbar-thumb {
                     background: #E50914;
                     border-radius: 4px;
+                }
+                /* Custom range input styling */
+                input[type="range"]::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 50%;
+                    background: #E50914;
+                    cursor: pointer;
+                    box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+                }
+                input[type="range"]::-moz-range-thumb {
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 50%;
+                    background: #E50914;
+                    cursor: pointer;
+                    border: none;
                 }
             `}</style>
         </HomeLayout>

@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/')->group(function(){
@@ -69,7 +70,8 @@ Route::prefix('/')->group(function(){
         )
     ])->name('list');
     Route::inertia('/append','append',['url'=>'/append'])->name('append');
-    Route::inertia('/player','player')->name('player');
+    // Route::inertia('/player','player')->name('player');
+    Route::get('/player/{id}',[DemoController::class,'watch'])->name('player');
 });
 
 require __DIR__.'/settings.php';
