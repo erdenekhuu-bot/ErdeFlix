@@ -17,11 +17,11 @@ rsync -av --delete \
 
 cd "$DST"
 
-echo "Installing PHP dependencies..."
-composer install --no-dev --optimize-autoloader
+# echo "Installing PHP dependencies..."
+# composer install --no-dev --optimize-autoloader
 
-echo "Installing frontend dependencies..."
-$YARN install --frozen-lockfile
+# echo "Installing frontend dependencies..."
+# $YARN install --frozen-lockfile
 
 echo "Building frontend..."
 $YARN build
