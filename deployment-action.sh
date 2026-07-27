@@ -60,33 +60,50 @@ rsync -av --delete \
     --exclude='node_modules/' \
     --exclude='vendor/' \
     --exclude='.git/' \
+    --exclude='.env' \
     "$SRC/" "$DST/"
 
 cd "$DST"
 
-# Fix PHP extension issues
-echo "Fixing PHP extension issues..."
-export PHP_OPCACHE_ENABLE=0
-export COMPOSER_ALLOW_SUPERUSER=1
+# Clear all caches before composer install
+echo "Clearing caches..."
+php artisan config:clear 2>/dev/null || true
+php artisan cache:clear 2>/dev/null || true
+php artisan view:clear 2>/dev/null || true
+php artisan route:clear 2>/dev/null || true
+php artisan optimize:clear 2>/dev/null || true
 
-# Install PHP dependencies with disabled extensions
 echo "Installing PHP dependencies..."
-php -d extension=openssl -d extension=xsl -d disable_functions="" /usr/local/bin/composer install --no-dev --optimize-autoloader --no-interaction
+# Install with --no-scripts to avoid post-autoload-dump issues
+/usr/local/bin/composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
+
+# Run package discovery separately (it worked in your test)
+php artisan package:discover --ansi
 
 echo "Installing frontend dependencies..."
 $YARN install --frozen-lockfile
 
-# Build frontend without Wayfinder plugin temporarily
+# Build frontend - with Wayfinder fix
 echo "Building frontend..."
-# Option 1: Disable Wayfinder plugin during build
-$YARN build -- --no-wayfinder
+# Option 1: Generate Wayfinder routes first
+php artisan wayfinder:generate --with-form 2>/dev/null || echo "Wayfinder generation skipped"
 
-# Option 2: Or run wayfinder generation separately
-# php artisan wayfinder:generate --with-form || echo "Wayfinder generation skipped"
-# $YARN build
+# Option 2: Build with environment variable to skip Wayfinder
+WAYFINDER_SKIP=true $YARN build || {
+    echo "Build failed with Wayfinder, trying without..."
+    # If failed, modify vite config temporarily
+    if [ -f vite.config.js ]; then
+        cp vite.config.js vite.config.js.backup
+        # Remove Wayfinder from config
+        sed -i '/wayfinder/d' vite.config.js
+        sed -i '/@laravel\/vite-plugin-wayfinder/d' vite.config.js
+        $YARN build
+        mv vite.config.js.backup vite.config.js
+    fi
+}
 
 echo "Laravel optimization..."
-php artisan optimize:clear
+php artisan optimize:clear 2>/dev/null || true
 php artisan migrate --force
 
 if [ ! -L public/storage ]; then
