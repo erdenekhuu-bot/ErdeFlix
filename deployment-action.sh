@@ -23,6 +23,21 @@ rsync -a \
     --exclude='bootstrap/cache/*.php' \
     "$SRC/" "$BUILD/"
 
+echo "Bringing in production .env and storage for build-time artisan commands..."
+if [ -f "$DST/.env" ]; then
+    cp "$DST/.env" "$BUILD/.env"
+else
+    echo "ERROR: $DST/.env not found. Create it manually before first deploy."
+    exit 1
+fi
+
+mkdir -p "$BUILD/storage"
+rsync -a "$DST/storage/" "$BUILD/storage/" 2>/dev/null || mkdir -p \
+    "$BUILD/storage/framework/sessions" \
+    "$BUILD/storage/framework/views" \
+    "$BUILD/storage/framework/cache" \
+    "$BUILD/storage/logs"
+
 cd "$BUILD"
 
 echo "Installing PHP dependencies..."
@@ -40,9 +55,18 @@ echo "Copying build to /var/www/ErdeFlix..."
 mkdir -p "$DST"
 
 rsync -a --delete \
+    --exclude='.env' \
+    --exclude='storage/' \
     "$BUILD/" "$DST/"
 
 cd "$DST"
+
+echo "Fixing storage/cache permissions..."
+mkdir -p storage/framework/{sessions,views,cache} storage/logs
+chown -R www-data:www-data "$DST/storage" "$DST/bootstrap/cache"
+find "$DST/storage" -type d -exec chmod 775 {} \;
+find "$DST/storage" -type f -exec chmod 664 {} \;
+chmod -R 775 "$DST/bootstrap/cache"
 
 echo "Clearing Laravel cache..."
 php artisan optimize:clear
