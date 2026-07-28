@@ -12,7 +12,7 @@ SRC="/home/lab/ErdeFlix"
 
 LIVE="/var/www/ErdeFlix"
 RELEASES="/var/www/ErdeFlix-releases"
-SHARED="/var/www/ErdeFlix-shared"
+SHARED="/var/www/ErdeFlix"
 
 RELEASE_ID="$(date +%Y%m%d_%H%M%S)"
 RELEASE="$RELEASES/$RELEASE_ID"
