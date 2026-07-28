@@ -69,8 +69,6 @@ fi
 echo "Optimizing Laravel..."
 php artisan optimize
 
-echo "Setting permissions..."
-chown -R www-data:www-data "$DST"
 
 find "$DST" -type d -exec chmod 755 {} \;
 find "$DST" -type f -exec chmod 644 {} \;
