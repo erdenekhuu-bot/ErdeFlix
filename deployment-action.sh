@@ -71,6 +71,9 @@ chmod -R 775 "$DST/bootstrap/cache"
 echo "Clearing Laravel cache..."
 php artisan optimize:clear
 
+echo "Linking storage..."
+php artisan storage:link
+
 echo "Running database migrations..."
 php artisan migrate --force
 
