@@ -40,6 +40,17 @@ mkdir -p "$DST"
 rsync -a --delete \
     "$BUILD/" "$DST/"
 
+cd "$DST"
+
+echo "Clearing Laravel cache..."
+php artisan optimize:clear
+
+echo "Running database migrations..."
+php artisan migrate --force
+
+echo "Optimizing Laravel..."
+php artisan optimize
+
 echo "Removing temporary build..."
 rm -rf "$BUILD"
 
