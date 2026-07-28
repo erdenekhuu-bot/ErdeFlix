@@ -105,7 +105,7 @@ php artisan optimize
 
 echo "Setting permissions..."
 
-chown -R root:www-data "$RELEASE"
+sudo chown -R root:www-data "$RELEASE"
 
 find "$RELEASE" \
     -type d \
@@ -115,7 +115,7 @@ find "$RELEASE" \
     -type f \
     -exec chmod 644 {} \;
 
-chown -R www-data:www-data \
+sudo chown -R www-data:www-data \
     "$SHARED/storage" \
     "$RELEASE/bootstrap/cache"
 
