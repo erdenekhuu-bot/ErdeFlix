@@ -18,6 +18,8 @@ rsync -a \
     --exclude='node_modules/' \
     --exclude='vendor/' \
     --exclude='.git/' \
+    --exclude='.env' \
+    --exclude='storage/' \
     --exclude='bootstrap/cache/*.php' \
     "$SRC/" "$BUILD/"
 
