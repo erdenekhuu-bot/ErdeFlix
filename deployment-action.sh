@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -Eeuo pipefail
 
 echo "===== Started deployment ====="
@@ -24,6 +25,13 @@ rsync -av --delete \
     "$SRC/" "$DST/"
 
 cd "$DST"
+
+echo "Verifying environment file..."
+if [ ! -f .env ]; then
+    echo ".env not found in $DST — aborting deployment"
+    exit 1
+fi
+echo "APP_URL: $(grep '^APP_URL=' .env | cut -d= -f2)"
 
 echo "Creating Laravel directories..."
 mkdir -p \
@@ -82,6 +90,8 @@ find storage bootstrap/cache \
 find storage bootstrap/cache \
     -type f \
     -exec chmod 664 {} \;
+
+echo "===== Deployment finished ====="
 
 #pm2 start cloudflared --name "erdeflix-tunnel" -- tunnel --url http://192.168.6.40:80
 #pm2 start cloudflared --name "erdeflix-tunnel" -- tunnel --protocol http2 --url http://192.168.6.40:80
