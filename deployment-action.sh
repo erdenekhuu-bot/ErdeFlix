@@ -13,29 +13,30 @@ echo "Preparing build directory..."
 rm -rf "$BUILD"
 mkdir -p "$BUILD"
 
-echo "Copying source..."
+echo "Copying source code..."
 rsync -a \
     --exclude='node_modules/' \
     --exclude='vendor/' \
     --exclude='.git/' \
     --exclude='.env' \
     --exclude='storage/' \
+    --exclude='public/storage' \
     --exclude='bootstrap/cache/*.php' \
     "$SRC/" "$BUILD/"
 
-echo "Bringing in production .env and storage for build-time artisan commands..."
+echo "Copying production .env..."
 if [ -f "$DST/.env" ]; then
     cp "$DST/.env" "$BUILD/.env"
 else
-    echo "ERROR: $DST/.env not found. Create it manually before first deploy."
+    echo "ERROR: $DST/.env not found."
     exit 1
 fi
 
-mkdir -p "$BUILD/storage"
-rsync -a "$DST/storage/" "$BUILD/storage/" 2>/dev/null || mkdir -p \
+echo "Preparing build storage directories..."
+mkdir -p \
     "$BUILD/storage/framework/sessions" \
     "$BUILD/storage/framework/views" \
-    "$BUILD/storage/framework/cache" \
+    "$BUILD/storage/framework/cache/data" \
     "$BUILD/storage/logs"
 
 cd "$BUILD"
@@ -43,7 +44,8 @@ cd "$BUILD"
 echo "Installing PHP dependencies..."
 COMPOSER_ALLOW_SUPERUSER=1 composer install \
     --no-dev \
-    --optimize-autoloader
+    --optimize-autoloader \
+    --no-interaction
 
 echo "Installing frontend dependencies..."
 "$YARN" install --frozen-lockfile
@@ -51,19 +53,38 @@ echo "Installing frontend dependencies..."
 echo "Building frontend..."
 "$YARN" build
 
-echo "Copying build to /var/www/ErdeFlix..."
+echo "Copying application build to $DST..."
 mkdir -p "$DST"
 
 rsync -a --delete \
     --exclude='.env' \
     --exclude='storage/' \
+    --exclude='public/storage' \
     "$BUILD/" "$DST/"
+
+echo "Copying HLS, movies, videos and all public storage files..."
+
+mkdir -p "$DST/storage/app/public"
+
+rsync -a --info=progress2 \
+    "$SRC/storage/app/public/" \
+    "$DST/storage/app/public/"
 
 cd "$DST"
 
-echo "Fixing storage/cache permissions..."
-mkdir -p storage/framework/{sessions,views,cache} storage/logs
-chown -R www-data:www-data "$DST/storage" "$DST/bootstrap/cache"
+echo "Preparing Laravel storage directories..."
+mkdir -p \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/framework/cache/data \
+    storage/logs \
+    storage/app/public
+
+echo "Fixing storage permissions..."
+chown -R www-data:www-data \
+    "$DST/storage" \
+    "$DST/bootstrap/cache"
+
 find "$DST/storage" -type d -exec chmod 775 {} \;
 find "$DST/storage" -type f -exec chmod 664 {} \;
 chmod -R 775 "$DST/bootstrap/cache"
@@ -71,7 +92,16 @@ chmod -R 775 "$DST/bootstrap/cache"
 echo "Clearing Laravel cache..."
 php artisan optimize:clear
 
-echo "Linking storage..."
+echo "Creating correct storage link..."
+
+if [ -L "$DST/public/storage" ]; then
+    rm -f "$DST/public/storage"
+elif [ -e "$DST/public/storage" ]; then
+    echo "ERROR: $DST/public/storage exists but is not a symbolic link."
+    echo "Please inspect it manually."
+    exit 1
+fi
+
 php artisan storage:link
 
 echo "Running database migrations..."
@@ -79,6 +109,10 @@ php artisan migrate --force
 
 echo "Optimizing Laravel..."
 php artisan optimize
+
+echo "Reloading services..."
+systemctl reload php8.5-fpm
+systemctl reload nginx
 
 echo "Removing temporary build..."
 rm -rf "$BUILD"
