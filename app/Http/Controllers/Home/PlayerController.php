@@ -12,17 +12,16 @@ use Illuminate\Support\Facades\DB;
 class PlayerController extends Controller
 {
      public function watch($id) {
-        $movie = Video::find($id);
+        $movie = Video::with('movie')->find($id);
 
         if ($movie) {
             $hlsUrl = Storage::disk('public')->url($movie->path . '/index.m3u8');
         } else {
             return Inertia::render('player', [
                 'detail' => $movie,
-                'error' => 'Movie or video not found',
-                'movie'=>$record
+                'error' => 'Movie or video not found'
             ]);
         }
-        return Inertia::render('player', ['hlsUrl' => $hlsUrl, 'detail' => $movie]);
+        return Inertia::render('player', ['hlsUrl' => $hlsUrl, 'detail' => $movie->movie,]);
     }
 }

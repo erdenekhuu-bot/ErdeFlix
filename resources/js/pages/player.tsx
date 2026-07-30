@@ -46,8 +46,8 @@ export default function Player({ hlsUrl }: DemoProps) {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const hlsRef = useRef<Hls | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const { record } = usePage<any>().props;
-    console.log(record);
+    const { detail } = usePage<{ detail: any }>().props;
+    console.log(detail);
 
     useEffect(() => {
         const video = videoRef.current;
@@ -204,14 +204,14 @@ export default function Player({ hlsUrl }: DemoProps) {
                 <div className="container mx-auto">
                     <div className="overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-gray-900 to-black">
                         {/* Video Player Area */}
-                        <div className="relative flex aspect-video items-center justify-center bg-black/90">
+                        <div className="relative flex aspect-video items-center justify-center overflow-hidden bg-black/90">
                             {/* Actual Video Element */}
                             <video
                                 ref={videoRef}
                                 className="!h-full !w-full !object-contain"
                                 style={{ objectFit: 'contain' }}
                                 playsInline
-                                poster="https://picsum.photos/1920/1080?random=1"
+                                poster={detail.meta_banner}
                             >
                                 {!Hls.isSupported() && hlsUrl && (
                                     <source
@@ -226,7 +226,7 @@ export default function Player({ hlsUrl }: DemoProps) {
                                 <div className="absolute inset-0">
                                     <Image
                                         preview={false}
-                                        src="https://picsum.photos/1920/1080?random=1"
+                                        src={detail.meta_banner}
                                         alt="Movie Background"
                                         className="!h-full !w-full !object-cover"
                                         style={{ objectFit: 'cover' }}
@@ -362,7 +362,7 @@ export default function Player({ hlsUrl }: DemoProps) {
                                             level={3}
                                             className="!mb-0 !text-white"
                                         >
-                                            Cosmic Drift (2024)
+                                            {detail.name}
                                         </Title>
                                         <Flex gap={8} className="mt-1">
                                             <Tag

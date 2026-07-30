@@ -15,6 +15,7 @@ import {
     Slider,
     Checkbox,
     Drawer,
+    Image,
 } from 'antd';
 import HomeLayout from '@/layouts/home-layout';
 import {
@@ -386,13 +387,20 @@ export default function Appended() {
                                     md={8}
                                     lg={6}
                                     key={movie.id}
+                                    className="flex"
                                 >
-                                    <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/10 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-red-500/10">
+                                    <div className="group relative flex w-full flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/10 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-red-500/10">
                                         <div className="relative">
-                                            <div className="flex h-56 items-center justify-center rounded-t-2xl bg-gradient-to-br from-gray-800 to-gray-900">
-                                                <div className="text-8xl opacity-20">
-                                                    {movie.image}
+                                            {/* Fixed height container enforcing uniform poster dimensions */}
+                                            <div className="relative flex h-96 w-full items-center justify-center overflow-hidden rounded-t-2xl bg-gradient-to-br from-gray-800 to-gray-900">
+                                                <div className="absolute inset-0 h-full w-full opacity-50">
+                                                    <Image
+                                                        src={movie.poster}
+                                                        alt={movie.name}
+                                                        className="h-full w-full object-cover"
+                                                    />
                                                 </div>
+
                                                 {movie.isNew && (
                                                     <Badge
                                                         count="NEW"
@@ -400,7 +408,7 @@ export default function Appended() {
                                                             backgroundColor:
                                                                 '#00b894',
                                                         }}
-                                                        className="absolute top-3 left-3"
+                                                        className="absolute top-3 left-3 z-20"
                                                     />
                                                 )}
                                                 {movie.isTrending && (
@@ -410,10 +418,10 @@ export default function Appended() {
                                                             backgroundColor:
                                                                 '#E50914',
                                                         }}
-                                                        className="absolute top-3 right-3"
+                                                        className="absolute top-3 right-3 z-20"
                                                     />
                                                 )}
-                                                <div className="absolute top-3 right-20 rounded-full bg-black/60 px-2.5 py-1 backdrop-blur-sm">
+                                                <div className="absolute top-3 right-20 z-20 rounded-full bg-black/60 px-2.5 py-1 backdrop-blur-sm">
                                                     <Flex
                                                         align="center"
                                                         gap={4}
@@ -429,6 +437,7 @@ export default function Appended() {
                                                     href={player({
                                                         id: movie.video_id,
                                                     })}
+                                                    className="absolute inset-0 z-10 flex items-center justify-center"
                                                 >
                                                     <Button
                                                         type="primary"
@@ -436,10 +445,11 @@ export default function Appended() {
                                                         icon={
                                                             <PlayCircleOutlined />
                                                         }
-                                                        className="absolute z-10 !h-14 !w-14 !bg-[#E50914] !text-2xl opacity-0 transition-opacity group-hover:opacity-100"
+                                                        className="!h-18 !w-18 !bg-[#E50914] !text-2xl opacity-0 transition-opacity group-hover:opacity-100"
                                                     />
                                                 </Link>
                                             </div>
+
                                             <div className="p-4">
                                                 <Flex
                                                     justify="space-between"
