@@ -8,12 +8,10 @@ import {
     Tag,
     Badge,
     Divider,
-    Space,
     Empty,
     Pagination,
     Select,
     Slider,
-    Checkbox,
     Drawer,
     Image,
 } from 'antd';
@@ -21,7 +19,6 @@ import HomeLayout from '@/layouts/home-layout';
 import {
     FilterOutlined,
     ClockCircleOutlined,
-    EyeOutlined,
     StarOutlined,
     HeartOutlined,
     PlayCircleOutlined,
@@ -44,7 +41,7 @@ export default function Appended() {
     const [yearRange, setYearRange] = useState<[number, number]>([2020, 2024]);
     const [ratingRange, setRatingRange] = useState<[number, number]>([4, 5]);
 
-    const { list } = usePage<{ list: any }>().props;
+    const { list, genre } = usePage<{ list: any; genre: any }>().props;
 
     // Mock data for new movies
     const newMovies = [
@@ -251,64 +248,15 @@ export default function Appended() {
             likes: 432,
         },
     ];
-
-    const genres = [
-        'Action',
-        'Adventure',
-        'Comedy',
-        'Cyberpunk',
-        'Drama',
-        'Horror',
-        'Mystery',
-        'Romance',
-        'Sci-Fi',
-        'Spy Thriller',
-        'Thriller',
-    ];
-
-    // Filter and sort logic
-    // const filteredMovies = newMovies
-    //     .filter((movie) => {
-    //         const matchesSearch = movie.title
-    //             .toLowerCase()
-    //             .includes(searchText.toLowerCase());
-    //         const matchesGenre =
-    //             selectedGenres.length === 0 ||
-    //             selectedGenres.includes(movie.genre);
-    //         return matchesSearch && matchesGenre;
-    //     })
-    //     .sort((a, b) => {
-    //         switch (sortBy) {
-    //             case 'newest':
-    //                 return (
-    //                     new Date(b.addedDate).getTime() -
-    //                     new Date(a.addedDate).getTime()
-    //                 );
-    //             case 'oldest':
-    //                 return (
-    //                     new Date(a.addedDate).getTime() -
-    //                     new Date(b.addedDate).getTime()
-    //                 );
-    //             case 'rating':
-    //                 return parseFloat(b.rating) - parseFloat(a.rating);
-    //             case 'views':
-    //                 return parseInt(b.views.replace('K', ''));
-    //             default:
-    //                 return 0;
-    //         }
-    //     });
-
     // Pagination
-    // const pageSize = 8;
-    // const paginatedMovies = filteredMovies.slice(
-    //     (currentPage - 1) * pageSize,
-    //     currentPage * pageSize,
-    // );
-
-    const filteredMovies = [];
+    const pageSize = 8;
+    const paginatedMovies = list?.data.slice(
+        (currentPage - 1) * pageSize,
+        currentPage * pageSize,
+    );
 
     return (
-        <HomeLayout title="New Appended Movies">
+        <HomeLayout title="Шинээр нэмэгдсэн">
             {/* Header Section */}
             <section className="bg-gradient-to-b from-black/95 to-black/90 px-4 py-8 md:px-8 lg:px-16">
                 <div className="container mx-auto">
@@ -321,17 +269,16 @@ export default function Appended() {
                                     className="!w-40"
                                     dropdownClassName="dark-dropdown"
                                 >
-                                    <Option value="newest">Newest First</Option>
-                                    <Option value="oldest">Oldest First</Option>
-                                    <Option value="rating">Top Rated</Option>
-                                    <Option value="views">Most Views</Option>
+                                    <Option value="newest">Шинэ</Option>
+                                    <Option value="oldest">Хуучин</Option>
+                                    <Option value="views">Их үзсэн</Option>
                                 </Select>
                                 <Button
                                     icon={<FilterOutlined />}
                                     className="!border-white/20 !bg-white/10 !text-white"
                                     onClick={() => setFilterDrawer(true)}
                                 >
-                                    Filters
+                                    Шүүх
                                 </Button>
                                 <Button.Group>
                                     <Button
@@ -391,9 +338,8 @@ export default function Appended() {
                                 >
                                     <div className="group relative flex w-full flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/10 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-red-500/10">
                                         <div className="relative">
-                                            {/* Fixed height container enforcing uniform poster dimensions */}
                                             <div className="relative flex h-96 w-full items-center justify-center overflow-hidden rounded-t-2xl bg-gradient-to-br from-gray-800 to-gray-900">
-                                                <div className="absolute inset-0 h-full w-full opacity-50">
+                                                <div className="absolute inset-0 h-full w-full opacity-70">
                                                     <Image
                                                         src={movie.poster}
                                                         alt={movie.name}
@@ -499,26 +445,26 @@ export default function Appended() {
                             ))}
                         </Row>
                     ) : (
-                        // 1
                         <div className="space-y-4">
-                            {/* {paginatedMovies.map((movie) => (
+                            {paginatedMovies.map((movie: any) => (
                                 <div
                                     key={movie.id}
                                     className="group rounded-2xl border border-white/5 bg-white/5 p-6 transition-all hover:border-white/20 hover:bg-white/10"
                                 >
                                     <Row gutter={[16, 16]} align="middle">
                                         <Col xs={24} md={2}>
-                                            <div className="text-4xl opacity-50">
-                                                {movie.image}
+                                            <div className="text-4xl opacity-70">
+                                                <Image src={movie.poster} />
                                             </div>
                                         </Col>
                                         <Col xs={24} md={6}>
                                             <div>
                                                 <Text className="block font-medium text-white">
-                                                    {movie.title}
+                                                    {movie.name}
                                                 </Text>
                                                 <Text className="text-sm text-white/40">
-                                                    {movie.genre} • {movie.year}
+                                                    {movie.genre} •{' '}
+                                                    {movie.movie_created_date}
                                                 </Text>
                                             </div>
                                         </Col>
@@ -535,12 +481,7 @@ export default function Appended() {
                                         </Col>
                                         <Col xs={24} md={3}>
                                             <Text className="text-sm text-white/60">
-                                                {movie.duration}
-                                            </Text>
-                                        </Col>
-                                        <Col xs={24} md={3}>
-                                            <Text className="text-sm text-white/60">
-                                                {movie.views} views
+                                                {movie.views} Үзэлт
                                             </Text>
                                         </Col>
                                         <Col xs={24} md={3}>
@@ -565,34 +506,43 @@ export default function Appended() {
                                                 )}
                                         </Col>
                                         <Col xs={24} md={3}>
-                                            <Button
-                                                type="primary"
-                                                icon={<PlayCircleOutlined />}
-                                                className="!w-full !bg-[#E50914] hover:!bg-[#f6121d]"
+                                            <Link
+                                                href={player({
+                                                    id: movie.video_id,
+                                                })}
+                                                className="absolute inset-0 z-10 flex items-center justify-center"
                                             >
-                                                Watch
-                                            </Button>
+                                                <Button
+                                                    type="primary"
+                                                    size="large"
+                                                    icon={
+                                                        <PlayCircleOutlined />
+                                                    }
+                                                    className="!w-full !bg-[#E50914] hover:!bg-[#f6121d]"
+                                                >
+                                                    Үзэх
+                                                </Button>
+                                            </Link>
                                         </Col>
                                     </Row>
                                 </div>
-                            ))} */}
-                            2
+                            ))}
                         </div>
                     )}
 
                     {/* Pagination */}
-                    {/* {filteredMovies.length > 0 && (
+                    {list?.data.length > 0 && (
                         <div className="mt-8 flex justify-center">
                             <Pagination
                                 current={currentPage}
-                                total={filteredMovies.length}
+                                total={list?.data.length}
                                 pageSize={pageSize}
                                 onChange={setCurrentPage}
                                 showSizeChanger={false}
                                 className="custom-pagination"
                             />
                         </div>
-                    )} */}
+                    )}
                 </div>
             </section>
 
@@ -601,7 +551,7 @@ export default function Appended() {
                 title={
                     <Flex align="center" gap={8}>
                         <FilterOutlined className="text-[#E50914]" />
-                        <Text className="text-white">Filters</Text>
+                        <Text className="text-white">Шүүлтүүр</Text>
                     </Flex>
                 }
                 placement="right"
@@ -627,30 +577,38 @@ export default function Appended() {
                     {/* Genres */}
                     <div>
                         <Text className="mb-3 block font-medium text-white">
-                            Genres
+                            Ангилал
                         </Text>
                         <div className="flex flex-wrap gap-2">
-                            {genres.map((genre) => (
-                                <Tag
-                                    key={genre}
-                                    className={`cursor-pointer rounded-full px-3 py-1 transition-all ${
-                                        selectedGenres.includes(genre)
-                                            ? 'border-0 !bg-[#E50914] !text-white'
-                                            : 'border-0 !bg-white/10 !text-white/60 hover:!bg-white/20'
-                                    }`}
-                                    onClick={() => {
-                                        setSelectedGenres(
-                                            selectedGenres.includes(genre)
-                                                ? selectedGenres.filter(
-                                                      (g) => g !== genre,
-                                                  )
-                                                : [...selectedGenres, genre],
-                                        );
-                                    }}
-                                >
-                                    {genre}
-                                </Tag>
-                            ))}
+                            {genre.map(
+                                (item: { name: string }, index: number) => (
+                                    <Tag
+                                        key={index}
+                                        className={`cursor-pointer rounded-full px-3 py-1 transition-all ${
+                                            selectedGenres.includes(item.name)
+                                                ? 'border-0 !bg-[#E50914] !text-white'
+                                                : 'border-0 !bg-white/10 !text-white/60 hover:!bg-white/20'
+                                        }`}
+                                        onClick={() => {
+                                            setSelectedGenres(
+                                                selectedGenres.includes(
+                                                    item.name,
+                                                )
+                                                    ? selectedGenres.filter(
+                                                          (g) =>
+                                                              g !== item.name,
+                                                      )
+                                                    : [
+                                                          ...selectedGenres,
+                                                          item.name,
+                                                      ],
+                                            );
+                                        }}
+                                    >
+                                        {item.name}
+                                    </Tag>
+                                ),
+                            )}
                         </div>
                     </div>
 
@@ -659,7 +617,7 @@ export default function Appended() {
                     {/* Year Range */}
                     <div>
                         <Text className="mb-3 block font-medium text-white">
-                            Year Range ({yearRange[0]} - {yearRange[1]})
+                            Кино гарсан жилүүд ({yearRange[0]} - {yearRange[1]})
                         </Text>
                         <Slider
                             range
@@ -679,7 +637,7 @@ export default function Appended() {
                     {/* Rating Range */}
                     <div>
                         <Text className="mb-3 block font-medium text-white">
-                            Rating Range ({ratingRange[0]} - {ratingRange[1]})
+                            Үнэлгээ ({ratingRange[0]} - {ratingRange[1]})
                         </Text>
                         <Slider
                             range
@@ -697,35 +655,13 @@ export default function Appended() {
 
                     <Divider className="!border-white/10" />
 
-                    {/* Additional Filters */}
-                    <div>
-                        <Text className="mb-3 block font-medium text-white">
-                            Additional
-                        </Text>
-                        <Space direction="vertical" className="w-full">
-                            <Checkbox className="text-white/80">
-                                <Text className="text-white/80">
-                                    4K Quality Only
-                                </Text>
-                            </Checkbox>
-                            <Checkbox className="text-white/80">
-                                <Text className="text-white/80">Trending</Text>
-                            </Checkbox>
-                            <Checkbox className="text-white/80">
-                                <Text className="text-white/80">
-                                    New Releases
-                                </Text>
-                            </Checkbox>
-                        </Space>
-                    </div>
-
                     <Button
                         type="primary"
                         block
                         className="!h-12 !bg-[#E50914] hover:!bg-[#f6121d]"
                         onClick={() => setFilterDrawer(false)}
                     >
-                        Apply Filters
+                        Шүүх
                     </Button>
                 </div>
             </Drawer>

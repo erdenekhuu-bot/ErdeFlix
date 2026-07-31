@@ -1,4 +1,4 @@
-import { usePage } from '@inertiajs/react';
+import { usePage, Link } from '@inertiajs/react';
 import { Flex, Button, Image, Row, Col, Typography, Tag, Badge } from 'antd';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -14,11 +14,12 @@ import {
     RightOutlined,
     HeartOutlined,
 } from '@ant-design/icons';
+import { player } from '@/routes';
 
 const { Title, Paragraph } = Typography;
 
 export default function Welcome() {
-    const { banner, records } = usePage<{
+    const { banner, records, feature } = usePage<{
         banner: string;
         records: {
             title: string;
@@ -27,21 +28,23 @@ export default function Welcome() {
             kind: string;
             date: string;
         }[];
+        feature: any;
     }>().props;
 
     const featuredItems = records.slice(0, 4);
     const mainFeature = records[0];
 
     const topRated = records.slice(0, 6);
+    const title = feature?.name.split(`"Цуст дайн"`)[0];
 
     return (
-        <HomeLayout title="Home">
+        <HomeLayout title="ERDEFLIX">
             {/* Hero Section - Enhanced */}
             <section className="relative h-[calc(100dvh)] overflow-hidden">
                 <div className="absolute inset-0">
                     <Image
                         preview={false}
-                        src={String(banner)}
+                        src={feature ? feature.meta_banner : String(banner)}
                         alt="Hero Background"
                         className="h-full w-full object-cover"
                         style={{ objectFit: 'cover' }}
@@ -67,30 +70,20 @@ export default function Welcome() {
                             {/* Main Title with Glitch Effect */}
                             <div className="animate-fade-in-up animation-delay-200 space-y-2">
                                 <div className="relative">
-                                    <h1 className="text-[6rem] leading-[0.8] font-black text-white drop-shadow-2xl md:text-[8rem] lg:text-[10rem]">
-                                        NEON
+                                    <h1 className="text-[3rem] leading-[0.8] font-black text-white drop-shadow-2xl md:text-[4rem] lg:text-[5rem]">
+                                        {title}
                                     </h1>
-                                    <div className="absolute top-0 left-0 text-[6rem] leading-[0.8] font-black text-transparent opacity-20 md:text-[8rem] lg:text-[10rem]">
-                                        NEON
+                                    <div className="absolute top-0 left-0 text-[3rem] leading-[0.8] font-black text-transparent opacity-20 md:text-[4rem] lg:text-[5rem]">
+                                        {title}
                                     </div>
                                 </div>
-                                <h1 className="relative text-[6rem] leading-[0.8] font-black text-[#E50914] drop-shadow-[0_0_30px_rgba(229,9,20,0.5)] md:text-[8rem] lg:text-[10rem]">
-                                    REBELLION
-                                    <span className="absolute -top-2 -right-4 text-xs font-normal text-white/40">
-                                        4K
-                                    </span>
-                                </h1>
                             </div>
 
                             {/* Description with Glass Effect */}
                             <div className="animate-fade-in-up animation-delay-400 mt-6 max-w-2xl">
                                 <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
                                     <p className="text-base leading-relaxed text-white/90 md:text-lg">
-                                        In a world where memories are traded
-                                        like currency, one rogue hacker
-                                        discovers a secret that could dismantle
-                                        the digital empire controlling
-                                        humanity's past.
+                                        {feature?.description}
                                     </p>
                                 </div>
                             </div>
@@ -100,20 +93,28 @@ export default function Welcome() {
                                 gap={12}
                                 className="animate-fade-in-up animation-delay-600 !mt-8"
                             >
-                                <Button
-                                    size="large"
-                                    type="primary"
-                                    className="!h-14 !border-[#E50914] !bg-[#E50914] !px-10 !font-bold !text-white shadow-[0_0_30px_rgba(229,9,20,0.3)] transition-all duration-300 hover:!scale-105 hover:!bg-[#f6121d] hover:shadow-[0_0_50px_rgba(229,9,20,0.5)]"
-                                    icon={<PlayCircleOutlined />}
+                                <Link
+                                    href={player({
+                                        id: feature?.video_id,
+                                    })}
                                 >
-                                    Watch Now
-                                </Button>
+                                    <Button
+                                        size="large"
+                                        type="primary"
+
+                                        className="!h-14 !border-[#E50914] !bg-[#E50914] !px-10 !font-bold !text-white shadow-[0_0_30px_rgba(229,9,20,0.3)] transition-all duration-300 hover:!scale-105 hover:!bg-[#f6121d] hover:shadow-[0_0_50px_rgba(229,9,20,0.5)]"
+                                        icon={<PlayCircleOutlined />}
+                                    >
+                                        Одоо үзэх
+                                    </Button>
+                                </Link>
+
                                 <Button
                                     size="large"
                                     className="!h-14 !border-white/20 !bg-white/10 !px-10 !text-white backdrop-blur-sm transition-all duration-300 hover:!scale-105 hover:!bg-white/20"
                                     icon={<HeartOutlined />}
                                 >
-                                    Add to List
+                                    Дуртай жагсаалтанд нэмэх
                                 </Button>
                             </Flex>
                         </div>

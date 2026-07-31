@@ -5,27 +5,9 @@ import HomeLayout from '@/layouts/home-layout';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-// eslint-disable-next-line import/order
 import { FeaturedCard } from '@/components/card/FeaturedCard';
-import {
-    PlusOutlined,
-    FilterOutlined,
-    RightOutlined,
-    HeartOutlined,
-    TeamOutlined,
-    LockOutlined,
-    StarOutlined,
-    ClockCircleOutlined,
-} from '@ant-design/icons';
-import {
-    Button,
 
-    Input,
-    Row,
-    Col,
-    Badge,
-    Typography,
-} from 'antd';
+import { Button, Input, Row, Col, Badge, Typography } from 'antd';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -38,17 +20,10 @@ interface RecordItem {
 }
 
 export default function Category() {
-    const { records } = usePage<{ records: RecordItem[] }>().props;
-
-    // Mock trending categories
-    const trendingTopics = [
-        { name: 'Action', icon: '⚡', color: '#E50914' },
-        { name: 'Sci-Fi', icon: '🚀', color: '#00d4ff' },
-        { name: 'Drama', icon: '🎭', color: '#ff6b6b' },
-        { name: 'Comedy', icon: '😂', color: '#ffd93d' },
-        { name: 'Thriller', icon: '🔪', color: '#6c5ce7' },
-        { name: 'Romance', icon: '❤️', color: '#fd79a8' },
-    ];
+    const { records, category } = usePage<{
+        records: RecordItem[];
+        category: any;
+    }>().props;
 
     return (
         <HomeLayout title="Watchlist & Collections">
@@ -71,7 +46,6 @@ export default function Category() {
                     </div>
                 </section>
 
-
                 {/* Categories with Glassmorphism */}
                 <section className="px-4 py-16 md:px-8 lg:px-16">
                     <div className="container mx-auto">
@@ -81,24 +55,15 @@ export default function Category() {
                                     level={2}
                                     className="!mb-0 !text-3xl !font-bold !text-white"
                                 >
-                                    Browse Categories
+                                    Ангилал
                                 </Title>
                             </div>
                         </div>
 
                         <Row gutter={[16, 16]}>
-                            {trendingTopics.map((category, index) => (
+                            {category.map((category: any, index: number) => (
                                 <Col xs={12} sm={8} md={6} lg={4} key={index}>
-                                    <div
-                                        className="group cursor-pointer rounded-2xl p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-                                        style={{
-                                            background: `linear-gradient(135deg, ${category.color}20, ${category.color}10)`,
-                                            border: `1px solid ${category.color}30`,
-                                        }}
-                                    >
-                                        <div className="mb-3 text-4xl transition-transform duration-300 group-hover:scale-110">
-                                            {category.icon}
-                                        </div>
+                                    <div className="group cursor-pointer rounded-2xl border border-white/50 p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl">
                                         <Text className="text-base font-semibold text-white/80 group-hover:text-white">
                                             {category.name}
                                         </Text>

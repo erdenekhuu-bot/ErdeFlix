@@ -1,5 +1,16 @@
-import { Head, Link, usePage,router } from '@inertiajs/react';
-import { Layout, Flex, Menu, Typography, Input, ConfigProvider, theme, Button, Row, Col} from 'antd';
+import { Head, Link, usePage, router } from '@inertiajs/react';
+import {
+    Layout,
+    Flex,
+    Menu,
+    Typography,
+    Input,
+    ConfigProvider,
+    theme,
+    Button,
+    Row,
+    Col,
+} from 'antd';
 import { dashboard, login, register, list, home, append } from '@/routes';
 
 export const darkTheme = {
@@ -10,9 +21,14 @@ export const darkTheme = {
     text: '#FFFFFF',
     modalBackground: '#222222',
 };
-export default function HomeLayout({ children, title}: { children: React.ReactNode; title: string; }) {
+export default function HomeLayout({
+    children,
+    title,
+}: {
+    children: React.ReactNode;
+    title: string;
+}) {
     const { auth, url } = usePage().props;
-
 
     const getActiveKey = () => {
         const path = String(url).split('?')[0];
@@ -29,15 +45,17 @@ export default function HomeLayout({ children, title}: { children: React.ReactNo
         }
     };
 
-    const handleLogout = ()=>{
-        router.post('/logout',{},{
-            preserveState:false,
-            preserveScroll:false,
-            onSuccess:()=>{
-
-            }
-        })
-    }
+    const handleLogout = () => {
+        router.post(
+            '/logout',
+            {},
+            {
+                preserveState: false,
+                preserveScroll: false,
+                onSuccess: () => {},
+            },
+        );
+    };
 
     return (
         <ConfigProvider
