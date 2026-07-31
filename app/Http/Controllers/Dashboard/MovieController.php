@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class MovieController extends Controller
 {
-    public function list():Response {
+    public function list(Request $request):Response {
         
        
         $list=DB::table('movies')->orderBy('id','asc')->paginate(5);

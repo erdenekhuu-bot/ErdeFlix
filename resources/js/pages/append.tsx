@@ -254,6 +254,7 @@ export default function Appended() {
         (currentPage - 1) * pageSize,
         currentPage * pageSize,
     );
+    console.log(list);
 
     return (
         <HomeLayout title="Шинээр нэмэгдсэн">
@@ -534,10 +535,22 @@ export default function Appended() {
                     {list?.data.length > 0 && (
                         <div className="mt-8 flex justify-center">
                             <Pagination
-                                current={currentPage}
-                                total={list?.data.length}
-                                pageSize={pageSize}
-                                onChange={setCurrentPage}
+                                current={list?.current_page}
+                                total={list?.total}
+                                pageSize={list?.per_page}
+                                onChange={(page: number, pageSize: number) => {
+                                    router.get(
+                                        window.location.pathname,
+                                        {
+                                            page: page,
+                                            per_page: pageSize,
+                                        },
+                                        {
+                                            preserveState: true,
+                                            preserveScroll: true,
+                                        },
+                                    );
+                                }}
                                 showSizeChanger={false}
                                 className="custom-pagination"
                             />

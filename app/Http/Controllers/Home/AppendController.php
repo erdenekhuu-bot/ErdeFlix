@@ -12,7 +12,7 @@ class AppendController extends Controller
 {
     public function list(Request $request):Response 
     {
-        $list=DB::table('movies')->orderBy('id', 'asc')->paginate(5);
+        $list=DB::table('movies')->orderBy('id', 'asc')->paginate(4);
         $category=DB::table('categories')->get();
         return Inertia::render('append',['list'=>$list,'genre'=>$category]);
     }
