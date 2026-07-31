@@ -132,7 +132,7 @@ export default function Welcome() {
                                     level={2}
                                     className="!mb-0 !text-3xl !font-bold !text-white"
                                 >
-                                    Trending Now
+                                    Тренд кинонууд
                                 </Title>
                             </div>
                         </div>
@@ -143,7 +143,7 @@ export default function Welcome() {
                                 icon={<RightOutlined />}
                                 iconPosition="end"
                             >
-                                View All
+                                Бүгдийг үзэх
                             </Button>
                         </div>
                     </div>
@@ -199,18 +199,10 @@ export default function Welcome() {
                                     level={2}
                                     className="!mb-0 !text-3xl !font-bold !text-white"
                                 >
-                                    Featured Content
+                                    Онцлох кинонууд
                                 </Title>
                             </div>
                         </div>
-                        <Button
-                            type="link"
-                            className="!text-white/70 hover:!text-white"
-                            icon={<RightOutlined />}
-                            iconPosition="end"
-                        >
-                            See All
-                        </Button>
                     </div>
 
                     <Row gutter={[24, 24]}>
@@ -388,7 +380,7 @@ export default function Welcome() {
                                     level={2}
                                     className="!mb-0 !text-3xl !font-bold !text-white"
                                 >
-                                    Top Rated
+                                    Үнэлгээ сайтай
                                 </Title>
                             </div>
                         </div>
@@ -398,7 +390,7 @@ export default function Welcome() {
                             icon={<RightOutlined />}
                             iconPosition="end"
                         >
-                            View All
+                            Бүгдийг үзэх
                         </Button>
                     </div>
 

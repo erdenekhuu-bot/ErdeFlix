@@ -211,7 +211,7 @@ export default function Player({ hlsUrl }: DemoProps) {
                                 className="!h-full !w-full !object-contain"
                                 style={{ objectFit: 'contain' }}
                                 playsInline
-                                poster={detail.meta_banner}
+                                poster={detail?.movie?.meta_banner}
                             >
                                 {!Hls.isSupported() && hlsUrl && (
                                     <source

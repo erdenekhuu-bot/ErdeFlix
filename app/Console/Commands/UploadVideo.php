@@ -16,7 +16,7 @@ class UploadVideo extends Command
      */
     public function handle()
     {
-        VideoTask::dispatch('videos/Underworld.mp4');
-        $this->info('Dispatched HLS job for videos/Underworld.mp4');
+        VideoTask::dispatch('videos/Flow.mp4');
+        $this->info('Dispatched HLS job for videos/Flow.mp4');
     }
 }
