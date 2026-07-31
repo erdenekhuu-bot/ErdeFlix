@@ -362,20 +362,14 @@ export default function Player({ hlsUrl }: DemoProps) {
                                             level={3}
                                             className="!mb-0 !text-white"
                                         >
-                                            {detail.name}
+                                            {detail?.movie?.name}
                                         </Title>
                                         <Flex gap={8} className="mt-1">
                                             <Tag
                                                 color="cyan"
                                                 className="rounded-full border-0"
                                             >
-                                                Sci-Fi
-                                            </Tag>
-                                            <Tag
-                                                color="purple"
-                                                className="rounded-full border-0"
-                                            >
-                                                Adventure
+                                                {detail?.movie?.category.name}
                                             </Tag>
                                             <Tag
                                                 color="gold"
@@ -425,7 +419,7 @@ export default function Player({ hlsUrl }: DemoProps) {
                                         level={5}
                                         className="!mb-0 !text-white"
                                     >
-                                        💭 Live Chat
+                                        💭 Сэтгэгдэл үлдээх хэсэг
                                     </Title>
                                     <Text className="text-xs text-white/40">
                                         1,234 viewers chatting
@@ -520,10 +514,10 @@ export default function Player({ hlsUrl }: DemoProps) {
                                     level={2}
                                     className="!mb-0 !text-2xl !font-bold !text-white"
                                 >
-                                    🎯 Recommended for You
+                                    🎯 Танд зориулсан
                                 </Title>
                                 <Text className="text-xs text-white/40">
-                                    Based on your recent watchlist
+                                    Үзсэн кинонууд дээр суурилав
                                 </Text>
                             </div>
                         </Flex>

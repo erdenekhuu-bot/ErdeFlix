@@ -17,4 +17,9 @@ class Movie extends Model
     {
         return $this->belongsTo(Video::class, 'video_id', 'id');
     }
+
+    public function category():BelongsTo
+    {
+        return $this->belongsTo(Category::class,'category_id','id');
+    }
 }

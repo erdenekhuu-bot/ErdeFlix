@@ -7,9 +7,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { FeaturedCard } from '@/components/card/FeaturedCard';
 
-import { Button, Input, Row, Col, Badge, Typography } from 'antd';
+import { Row, Col, Typography } from 'antd';
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
 
 interface RecordItem {
     title: string;
@@ -24,7 +24,7 @@ export default function Category() {
         records: RecordItem[];
         category: any;
     }>().props;
-
+    console.log(category);
     return (
         <HomeLayout title="Watchlist & Collections">
             <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
@@ -40,7 +40,7 @@ export default function Category() {
                                 level={1}
                                 className="!mb-2 !text-5xl !font-bold !text-white md:!text-6xl"
                             >
-                                Watchlist & Collections
+                                Үзэх жагсаалт & Ангиллууд
                             </Title>
                         </div>
                     </div>
@@ -67,11 +67,8 @@ export default function Category() {
                                         <Text className="text-base font-semibold text-white/80 group-hover:text-white">
                                             {category.name}
                                         </Text>
-                                        <div className="mt-2 text-xs text-white/30">
-                                            {Math.floor(
-                                                Math.random() * 100 + 50,
-                                            )}{' '}
-                                            titles
+                                        <div className="mt-2 text-xs text-white/40">
+                                            {`${category.movies_count} `}
                                         </div>
                                         <div className="mt-3 h-0.5 w-0 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-all duration-500 group-hover:w-full" />
                                     </div>

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class PlayerController extends Controller
 {
      public function watch($id) {
-        $movie = Video::with('movie')->find($id);
+        $movie = Video::with('movie.category')->find($id);
 
         if ($movie) {
             $hlsUrl = Storage::disk('public')->url($movie->path . '/index.m3u8');
@@ -22,6 +22,6 @@ class PlayerController extends Controller
                 'error' => 'Movie or video not found'
             ]);
         }
-        return Inertia::render('player', ['hlsUrl' => $hlsUrl, 'detail' => $movie->movie,]);
+        return Inertia::render('player', ['hlsUrl' => $hlsUrl, 'detail' => $movie]);
     }
 }

@@ -12,7 +12,14 @@ class ListController extends Controller
 {
     public function list(Request $request):Response
     {
-        $category=DB::table('categories')->get();
+        $category=DB::table('categories')
+                    ->leftJoin('movies', 'categories.id', '=', 'movies.category_id')
+                    ->select(
+                        'categories.*',
+                        DB::raw('COUNT(movies.id) as movies_count')
+                    )
+                    ->groupBy('categories.id')
+                    ->get();
         return Inertia::render('category',['url'=>'/list',
         'records' => array(
             array(  'title' => 'Demo Movie 1',
