@@ -180,6 +180,7 @@ export default function Welcome() {
                                             isTrending={index < 2}
                                             rating={4.5 + index * 0.1}
                                             views={`${Math.floor(Math.random() * 50 + 10)}K`}
+                                            video={item.video_id}
                                         />
                                     </div>
                                 </SwiperSlide>

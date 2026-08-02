@@ -125,6 +125,7 @@ export default function Category() {
                                             description={item.description}
                                             kind={item.category_name}
                                             date={item.movie_created_date}
+                                            video={item.video_id}
                                         />
                                     </SwiperSlide>
                                 ))}

@@ -7,6 +7,8 @@ import {
     FireOutlined,
 } from '@ant-design/icons';
 import { Card, Tag } from 'antd';
+import { player } from '@/routes';
+import { Link } from '@inertiajs/react';
 
 export function FeaturedCard({
     title,
@@ -20,6 +22,7 @@ export function FeaturedCard({
     isNew,
     isTrending,
     isExclusive,
+    video,
 }: {
     title: string;
     kind: string;
@@ -32,6 +35,7 @@ export function FeaturedCard({
     isNew?: boolean;
     isTrending?: boolean;
     isExclusive?: boolean;
+    video?: string;
 }) {
     return (
         <Card
@@ -132,9 +136,15 @@ export function FeaturedCard({
 
                     {/* Hover Play Button */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-500 group-hover:opacity-100">
-                        <div className="transform rounded-full bg-white/10 p-5 backdrop-blur-xl transition-all duration-500 hover:scale-110 hover:bg-white/20">
-                            <PlayCircleOutlined className="text-6xl text-white drop-shadow-2xl" />
-                        </div>
+                        <Link
+                            href={player({
+                                id: video!,
+                            })}
+                        >
+                            <div className="transform rounded-full bg-white/10 p-5 backdrop-blur-xl transition-all duration-500 hover:scale-110 hover:bg-white/20">
+                                <PlayCircleOutlined className="text-6xl text-white drop-shadow-2xl" />
+                            </div>
+                        </Link>
                     </div>
                 </div>
             }
