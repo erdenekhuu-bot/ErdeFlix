@@ -13,15 +13,14 @@ class PlayerController extends Controller
 {
      public function watch($id) {
         $movie = Video::with('movie.category')->find($id);
+        $list=DB::table('movies')
+        ->where('category_id', '=', $movie->movie->category->id)
+        ->where('name', 'like', '%' . mb_substr($movie->movie->name, 0, 11) . '%')
+        ->limit(4)->get();
 
         if ($movie) {
             $hlsUrl = Storage::disk('public')->url($movie->path . '/index.m3u8');
-        } else {
-            return Inertia::render('player', [
-                'detail' => $movie,
-                'error' => 'Movie or video not found'
-            ]);
-        }
-        return Inertia::render('player', ['hlsUrl' => $hlsUrl, 'detail' => $movie]);
+        } 
+        return Inertia::render('player', ['hlsUrl' => $hlsUrl, 'detail' => $movie, 'list' => $list]);
     }
 }

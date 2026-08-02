@@ -60,13 +60,10 @@ export function FeaturedCard({
                     {/* Top Badges */}
                     <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
                         <Tag
-                            color={kind === 'Movie' ? 'cyan' : 'purple'}
+                            color={'lime'}
                             className="bg-opacity-90 m-0 rounded-full border-0 px-4 py-1.5 text-xs font-bold tracking-wider uppercase shadow-lg backdrop-blur-md"
                             style={{
-                                background:
-                                    kind === 'Movie'
-                                        ? 'rgba(6, 182, 212, 0.9)'
-                                        : 'rgba(168, 85, 247, 0.9)',
+                                background: 'rgba(6, 182, 212, 0.9)',
                                 backdropFilter: 'blur(12px)',
                             }}
                         >

@@ -1,4 +1,4 @@
-import { usePage } from '@inertiajs/react';
+import { usePage, Link, router } from '@inertiajs/react';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import HomeLayout from '@/layouts/home-layout';
@@ -24,7 +24,7 @@ export default function Category() {
         records: RecordItem[];
         category: any;
     }>().props;
-    console.log(category);
+
     return (
         <HomeLayout title="Watchlist & Collections">
             <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
@@ -63,7 +63,14 @@ export default function Category() {
                         <Row gutter={[16, 16]}>
                             {category.map((category: any, index: number) => (
                                 <Col xs={12} sm={8} md={6} lg={4} key={index}>
-                                    <div className="group cursor-pointer rounded-2xl border border-white/50 p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                                    <div
+                                        className="group cursor-pointer rounded-2xl border border-white/50 p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                                        onClick={() => {
+                                            router.get('/list', {
+                                                category: category.name,
+                                            });
+                                        }}
+                                    >
                                         <Text className="text-base font-semibold text-white/80 group-hover:text-white">
                                             {category.name}
                                         </Text>
@@ -86,11 +93,8 @@ export default function Category() {
                                     level={2}
                                     className="!mb-1 !text-2xl !font-bold !text-white"
                                 >
-                                    🔥 Trending in Your Collections
+                                    🔥 Трэнд болж байгаа
                                 </Title>
-                                <Text className="text-white/40">
-                                    Based on your saved content
-                                </Text>
                             </div>
                         </div>
 
@@ -113,14 +117,14 @@ export default function Category() {
                                 }}
                                 className="trending-swiper !pb-12"
                             >
-                                {records.map((item, index) => (
+                                {records.map((item: any, index: number) => (
                                     <SwiperSlide key={index}>
                                         <FeaturedCard
-                                            image={item.image}
-                                            title={item.title}
+                                            image={item.poster}
+                                            title={item.name}
                                             description={item.description}
-                                            kind={item.kind}
-                                            date={item.date}
+                                            kind={item.category_name}
+                                            date={item.movie_created_date}
                                         />
                                     </SwiperSlide>
                                 ))}

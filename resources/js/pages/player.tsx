@@ -23,7 +23,6 @@ import {
     Badge,
     Avatar,
     Input,
-    Progress,
 } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import HomeLayout from '@/layouts/home-layout';
@@ -46,8 +45,7 @@ export default function Player({ hlsUrl }: DemoProps) {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const hlsRef = useRef<Hls | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const { detail } = usePage<{ detail: any }>().props;
-    console.log(detail);
+    const { detail, list } = usePage<{ detail: any; list: any }>().props;
 
     useEffect(() => {
         const video = videoRef.current;
@@ -170,33 +168,6 @@ export default function Player({ hlsUrl }: DemoProps) {
         },
     ];
 
-    const recommendedMovies = [
-        {
-            title: 'The Silent Echo',
-            rating: '4.6',
-            duration: '1h 30m',
-            genre: 'Action',
-        },
-        {
-            title: 'Crimson Shields',
-            rating: '4.6',
-            duration: '1h 30m',
-            genre: 'Action',
-        },
-        {
-            title: 'Obsidian Pulse',
-            rating: '4.6',
-            duration: '1h 30m',
-            genre: 'Thriller',
-        },
-        {
-            title: 'Neon Nights',
-            rating: '4.6',
-            duration: '1h 30m',
-            genre: 'Sci-Fi',
-        },
-    ];
-
     return (
         <HomeLayout title="Player">
             {/* Player Section */}
@@ -226,7 +197,7 @@ export default function Player({ hlsUrl }: DemoProps) {
                                 <div className="absolute inset-0">
                                     <Image
                                         preview={false}
-                                        src={detail.meta_banner}
+                                        src={detail?.movie?.meta_banner}
                                         alt="Movie Background"
                                         className="!h-full !w-full !object-cover"
                                         style={{ objectFit: 'cover' }}
@@ -514,35 +485,42 @@ export default function Player({ hlsUrl }: DemoProps) {
                                     level={2}
                                     className="!mb-0 !text-2xl !font-bold !text-white"
                                 >
-                                    🎯 Танд зориулсан
+                                    🎯 Танд зориулав
                                 </Title>
-                                <Text className="text-xs text-white/40">
-                                    Үзсэн кинонууд дээр суурилав
-                                </Text>
                             </div>
                         </Flex>
                     </div>
 
                     <Row gutter={[16, 16]}>
-                        {recommendedMovies.map((movie, index) => (
+                        {list?.map((movie: any, index: number) => (
                             <Col xs={24} sm={12} lg={6} key={index}>
                                 <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/10 p-4 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-red-500/10">
                                     <div className="relative">
-                                        <div className="mb-3 flex h-48 items-center justify-center rounded-xl bg-gradient-to-br from-gray-800 to-gray-900">
-                                            <div className="text-6xl opacity-20">
-                                                🎬
+                                        {/* Poster & Play Button Container */}
+                                        <div className="relative mb-3 flex h-96 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-gray-800 to-gray-900">
+                                            <div className="absolute inset-0 z-0 opacity-70">
+                                                <Image
+                                                    src={movie.poster}
+                                                    alt={
+                                                        movie.name ||
+                                                        'Movie Poster'
+                                                    }
+                                                    className="!h-full !w-full !object-cover"
+                                                />
                                             </div>
                                             <Button
                                                 type="primary"
                                                 shape="circle"
                                                 icon={<PlayCircleOutlined />}
-                                                className="absolute !bg-[#E50914] opacity-0 transition-opacity group-hover:opacity-100"
+                                                className="!absolute z-10 !h-16 !w-16 !bg-[#E50914] opacity-0 transition-opacity group-hover:opacity-100"
                                             />
                                         </div>
-                                        <div className="flex items-start justify-between">
+
+                                        {/* Movie Info Section (Higher z-index) */}
+                                        <div className="relative z-20 flex items-start justify-between">
                                             <div className="flex-1">
                                                 <Text className="block truncate font-medium text-white">
-                                                    {movie.title}
+                                                    {movie.name}
                                                 </Text>
                                                 <Flex
                                                     gap={8}
@@ -553,18 +531,6 @@ export default function Player({ hlsUrl }: DemoProps) {
                                                         className="rounded-full border-0 text-xs"
                                                     >
                                                         ⭐ {movie.rating}
-                                                    </Tag>
-                                                    <Tag
-                                                        color="default"
-                                                        className="rounded-full border-0 text-xs"
-                                                    >
-                                                        {movie.duration}
-                                                    </Tag>
-                                                    <Tag
-                                                        color="red"
-                                                        className="rounded-full border-0 text-xs"
-                                                    >
-                                                        {movie.genre}
                                                     </Tag>
                                                 </Flex>
                                             </div>

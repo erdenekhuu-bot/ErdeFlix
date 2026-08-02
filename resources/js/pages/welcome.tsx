@@ -24,17 +24,17 @@ export default function Welcome() {
         records: {
             title: string;
             description: string;
-            image: string;
+            poster: string;
             kind: string;
             date: string;
         }[];
         feature: any;
     }>().props;
 
-    const featuredItems = records.slice(0, 4);
-    const mainFeature = records[0];
+    const featuredItems: any = records.slice(0, 4);
+    const mainFeature: any = records[0];
 
-    const topRated = records.slice(0, 6);
+    const topRated: any = records.slice(0, 6);
     const title = feature?.name.split(`"Цуст дайн"`)[0];
 
     return (
@@ -105,7 +105,7 @@ export default function Welcome() {
                                         className="!h-14 !border-[#E50914] !bg-[#E50914] !px-10 !font-bold !text-white shadow-[0_0_30px_rgba(229,9,20,0.3)] transition-all duration-300 hover:!scale-105 hover:!bg-[#f6121d] hover:shadow-[0_0_50px_rgba(229,9,20,0.5)]"
                                         icon={<PlayCircleOutlined />}
                                     >
-                                        Одоо үзэх
+                                        Үзэх
                                     </Button>
                                 </Link>
 
@@ -167,15 +167,15 @@ export default function Welcome() {
                             }}
                             className="trending-swiper !pb-12"
                         >
-                            {records.map((item, index) => (
+                            {records?.map((item: any, index: number) => (
                                 <SwiperSlide key={index}>
                                     <div className="transform transition-all duration-300 hover:z-10 hover:scale-105">
                                         <FeaturedCard
-                                            image={item.image}
-                                            title={item.title}
+                                            image={item.poster}
+                                            title={item.name}
                                             description={item.description}
-                                            kind={item.kind}
-                                            date={item.date}
+                                            kind={item.category_name}
+                                            date={item.movie_created_date}
                                             isNew={index === 0}
                                             isTrending={index < 2}
                                             rating={4.5 + index * 0.1}
@@ -212,8 +212,8 @@ export default function Welcome() {
                                 <div className="group relative h-[550px] overflow-hidden rounded-2xl">
                                     <Image
                                         preview={false}
-                                        src={mainFeature.image}
-                                        alt={mainFeature.title}
+                                        src={mainFeature.poster}
+                                        alt={''}
                                         className="!h-full !w-full !object-cover transition-transform duration-700 group-hover:scale-110"
                                         style={{ objectFit: 'cover' }}
                                     />
@@ -223,7 +223,7 @@ export default function Welcome() {
                                     {/* Featured Badge */}
                                     <div className="absolute top-6 left-6">
                                         <Badge
-                                            count="⭐ FEATURED"
+                                            count="⭐ Шинэ"
                                             style={{
                                                 backgroundColor:
                                                     'rgba(229,9,20,0.9)',
@@ -237,7 +237,7 @@ export default function Welcome() {
                                                 color="cyan"
                                                 className="rounded-full border-0 px-3 py-1 text-xs font-bold uppercase"
                                             >
-                                                {mainFeature.kind}
+                                                {mainFeature.category_name}
                                             </Tag>
                                             <Tag
                                                 color="gold"
@@ -251,7 +251,7 @@ export default function Welcome() {
                                             level={2}
                                             className="!mb-2 !text-4xl !font-bold !text-white"
                                         >
-                                            {mainFeature.title}
+                                            {mainFeature.name}
                                         </Title>
 
                                         <Paragraph className="!mb-4 max-w-lg !text-base !text-white/70">
@@ -259,13 +259,21 @@ export default function Welcome() {
                                         </Paragraph>
 
                                         <Flex gap={8} className="!mt-6">
-                                            <Button
-                                                type="primary"
-                                                icon={<PlayCircleOutlined />}
-                                                className="!h-12 !border-[#E50914] !bg-[#E50914] !px-8 hover:!bg-[#f6121d]"
+                                            <Link
+                                                href={player({
+                                                    id: mainFeature.video_id,
+                                                })}
                                             >
-                                                Watch Now
-                                            </Button>
+                                                <Button
+                                                    type="primary"
+                                                    icon={
+                                                        <PlayCircleOutlined />
+                                                    }
+                                                    className="!h-12 !border-[#E50914] !bg-[#E50914] !px-8 hover:!bg-[#f6121d]"
+                                                >
+                                                    Үзэх
+                                                </Button>
+                                            </Link>
                                             <Button className="!h-12 !border-white/20 !bg-white/10 !px-8 !text-white backdrop-blur-sm hover:!bg-white/20">
                                                 + Add to List
                                             </Button>
@@ -280,13 +288,13 @@ export default function Welcome() {
                             <Row gutter={[16, 16]}>
                                 {featuredItems
                                     .slice(1, 5)
-                                    .map((item, index) => (
+                                    .map((item: any, index: number) => (
                                         <Col xs={24} sm={12} key={index}>
                                             <div className="group relative h-[260px] overflow-hidden rounded-2xl">
                                                 <Image
                                                     preview={false}
-                                                    src={item.image}
-                                                    alt={item.title}
+                                                    src={item.poster}
+                                                    alt={''}
                                                     className="!h-full !w-full !object-cover transition-transform duration-700 group-hover:scale-110"
                                                     style={{
                                                         objectFit: 'cover',
@@ -296,63 +304,42 @@ export default function Welcome() {
 
                                                 {/* Hover Overlay */}
                                                 <div className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                                                    <Button
-                                                        type="primary"
-                                                        shape="circle"
-                                                        icon={
-                                                            <PlayCircleOutlined />
-                                                        }
-                                                        className="!h-16 !w-16 !border-[#E50914] !bg-[#E50914] !text-3xl transition-transform hover:!scale-110"
-                                                    />
+                                                    <Link
+                                                        href={player({
+                                                            id: item.video_id,
+                                                        })}
+                                                    >
+                                                        <Button
+                                                            type="primary"
+                                                            shape="circle"
+                                                            icon={
+                                                                <PlayCircleOutlined />
+                                                            }
+                                                            className="!h-16 !w-16 !border-[#E50914] !bg-[#E50914] !text-3xl transition-transform hover:!scale-110"
+                                                        />
+                                                    </Link>
                                                 </div>
 
                                                 <div className="absolute right-0 bottom-0 left-0 p-4">
                                                     <div className="mb-1 flex items-center gap-2">
                                                         <Tag
-                                                            color={
-                                                                item.kind ===
-                                                                'Movie'
-                                                                    ? 'cyan'
-                                                                    : 'purple'
-                                                            }
+                                                            color={'cyan'}
                                                             className="rounded-full border-0 px-2 py-0 text-[10px] font-bold uppercase"
                                                         >
-                                                            {item.kind}
+                                                            {item.category_name}
                                                         </Tag>
-                                                        {index === 0 && (
-                                                            <Tag
-                                                                color="green"
-                                                                className="rounded-full border-0 px-2 py-0 text-[10px] font-bold uppercase"
-                                                            >
-                                                                NEW
-                                                            </Tag>
-                                                        )}
-                                                        {index === 1 && (
-                                                            <Tag
-                                                                color="orange"
-                                                                className="rounded-full border-0 px-2 py-0 text-[10px] font-bold uppercase"
-                                                            >
-                                                                🔥 HOT
-                                                            </Tag>
-                                                        )}
                                                     </div>
                                                     <Title
                                                         level={5}
                                                         className="!mb-0 !text-base !font-bold !text-white"
                                                     >
-                                                        {item.title}
+                                                        {item.name}
                                                     </Title>
                                                     <div className="flex items-center gap-3 text-xs text-white/50">
                                                         <span>
                                                             {new Date(
-                                                                item.date,
-                                                            ).toLocaleDateString(
-                                                                'en-US',
-                                                                {
-                                                                    month: 'short',
-                                                                    day: 'numeric',
-                                                                },
-                                                            )}
+                                                                item.movie_created_date,
+                                                            ).getFullYear()}
                                                         </span>
                                                         <span>•</span>
                                                         <span className="flex items-center gap-1">
@@ -395,14 +382,14 @@ export default function Welcome() {
                     </div>
 
                     <Row gutter={[16, 16]}>
-                        {topRated.map((item, index) => (
+                        {topRated?.map((item: any, index: number) => (
                             <Col xs={12} sm={8} md={6} lg={4} key={index}>
                                 <div className="group relative overflow-hidden rounded-2xl">
                                     <div className="relative h-48 overflow-hidden">
                                         <Image
                                             preview={false}
-                                            src={item.image}
-                                            alt={item.title}
+                                            src={item.poster}
+                                            alt={``}
                                             className="!h-full !w-full !object-cover transition-transform duration-700 group-hover:scale-110"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
@@ -433,22 +420,18 @@ export default function Welcome() {
                                             level={5}
                                             className="!mb-0 truncate !text-sm !font-bold !text-white"
                                         >
-                                            {item.title}
+                                            {item.name}
                                         </Title>
                                         <div className="mt-1 flex items-center justify-between">
                                             <Tag
-                                                color={
-                                                    item.kind === 'Movie'
-                                                        ? 'cyan'
-                                                        : 'purple'
-                                                }
+                                                color={`gold`}
                                                 className="rounded-full border-0 px-2 py-0 text-[8px] font-bold uppercase"
                                             >
-                                                {item.kind}
+                                                {item.category_name}
                                             </Tag>
                                             <span className="text-xs text-white/40">
                                                 {new Date(
-                                                    item.date,
+                                                    item.movie_created_date,
                                                 ).getFullYear()}
                                             </span>
                                         </div>

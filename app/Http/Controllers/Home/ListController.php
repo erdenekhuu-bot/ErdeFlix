@@ -10,56 +10,37 @@ use Inertia\Response;
 
 class ListController extends Controller
 {
-    public function list(Request $request):Response
-    {
-        $category=DB::table('categories')
-                    ->leftJoin('movies', 'categories.id', '=', 'movies.category_id')
-                    ->select(
-                        'categories.*',
-                        DB::raw('COUNT(movies.id) as movies_count')
-                    )
-                    ->groupBy('categories.id')
-                    ->get();
-        return Inertia::render('category',['url'=>'/list',
-        'records' => array(
-            array(  'title' => 'Demo Movie 1',
-                'description' => 'Lorem ipsum dolor sit amet.',
-                'image' => asset('asset/feature1.png'),
-                'kind' => 'Movie',
-                'date' => '2026-07-17'
-            ),
-            array('title' => 'Demo Movie 2',
-                'description' => 'Consectetur adipiscing elit.',
-                'image' => asset('asset/feature2.png'),
-                'kind' => 'Series',
-                'date' => '2026-07-18'
-            ),
-            array( 'title' => 'Demo Movie 3',
-                'description' => 'Sed do eiusmod tempor incididunt.',
-                'image' => asset('asset/feature3.png'),
-                'kind' => 'Movie',
-                'date' => '2026-07-19'
-            ),
-            array( 'title' => 'Demo Movie 3',
-                'description' => 'Sed do eiusmod tempor incididunt.',
-                'image' => asset('asset/feature3.png'),
-                'kind' => 'Movie',
-                'date' => '2026-07-19'
-            ),
-            array( 'title' => 'Demo Movie 3',
-                'description' => 'Sed do eiusmod tempor incididunt.',
-                'image' => asset('asset/feature3.png'),
-                'kind' => 'Movie',
-                'date' => '2026-07-19'
-            ),
-            array( 'title' => 'Demo Movie 3',
-                'description' => 'Sed do eiusmod tempor incididunt.',
-                'image' => asset('asset/feature3.png'),
-                'kind' => 'Movie',
-                'date' => '2026-07-19'
-            )
-        ),
-        'category'=>$category
-        ]);
+    public function list(Request $request): Response
+{
+    $param = $request->query('category') ?? "";
+
+    $category = DB::table('categories')
+        ->leftJoin('movies', 'categories.id', '=', 'movies.category_id')
+        ->select(
+            'categories.*',
+            DB::raw('COUNT(movies.id) as movies_count')
+        )
+        ->groupBy('categories.id')
+        ->get();
+
+    $trendsQuery = DB::table('movies')
+        ->leftJoin('categories', 'movies.category_id', '=', 'categories.id')
+        ->select(
+            'movies.*',
+            'categories.name as category_name'
+        );
+
+
+    if (!empty($param)) {
+        $trendsQuery->where('categories.name', 'LIKE', trim($param));
     }
+
+    $trends = $trendsQuery->orderBy('movies.created_at', 'desc')->get();
+
+    return Inertia::render('category', [
+        'url' => '/list',
+        'records' => $trends,
+        'category' => $category
+    ]);
+}
 }
