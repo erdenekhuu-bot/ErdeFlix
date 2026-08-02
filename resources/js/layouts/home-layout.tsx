@@ -4,14 +4,27 @@ import {
     Flex,
     Menu,
     Typography,
-    Input,
     ConfigProvider,
     theme,
     Button,
     Row,
     Col,
+    AutoComplete,
 } from 'antd';
-import { dashboard, login, register, list, home, append } from '@/routes';
+import {
+    dashboard,
+    login,
+    register,
+    list,
+    home,
+    append,
+    movies,
+    player,
+} from '@/routes';
+import React, { useState } from 'react';
+import { SearchOutlined } from '@ant-design/icons';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 export const darkTheme = {
     background: '#121212',
@@ -29,6 +42,8 @@ export default function HomeLayout({
     title: string;
 }) {
     const { auth, url } = usePage().props;
+    // const [options, setOptions] = useState<AutoCompleteProps['options']>([]);
+    const [searchText, setSearchText] = useState('');
 
     const getActiveKey = () => {
         const path = String(url).split('?')[0];
@@ -45,6 +60,25 @@ export default function HomeLayout({
         }
     };
 
+    const { data: movies = [], isLoading } = useQuery({
+        queryKey: ['searchMovies', searchText],
+        queryFn: async () => {
+            const response = await axios.get('/api/filtermovies', {
+                params: {
+                    search: searchText,
+                },
+            });
+            return response.data.movies;
+        },
+        enabled: searchText.trim().length > 0,
+    });
+
+    const options = movies.map((movie: any) => ({
+        value: movie.name,
+        label: movie.name,
+        movieId: movie.id,
+    }));
+
     const handleLogout = () => {
         router.post(
             '/logout',
@@ -55,6 +89,23 @@ export default function HomeLayout({
                 onSuccess: () => {},
             },
         );
+    };
+
+    const onSelect = (
+        value: string,
+        option: {
+            value: string;
+            label: string;
+            movieId: number;
+            videoId: string;
+        },
+    ) => {
+        setSearchText(value);
+
+        console.log('Movie name:', value);
+        console.log('Movie ID:', option.movieId);
+        console.log('Video ID:', option.videoId);
+        router.get(player(option.videoId));
     };
 
     return (
@@ -130,10 +181,18 @@ export default function HomeLayout({
 
                             className="flex-1 !border-b-0 !bg-transparent"
                         />
-                        <Input.Search
-                            placeholder={'Search movie...'}
-                            className={'!w-92'}
+                        <AutoComplete
+                            loadingIcon={
+                                isLoading ? <span>Loading...</span> : null
+                            }
+                            value={searchText}
+                            options={options}
+                            className="!w-92"
+                            onSelect={onSelect}
+                            onSearch={setSearchText}
+                            suffix={<SearchOutlined />}
                         />
+
                         <Flex gap={12} align="center">
                             {auth.user ? (
                                 <Flex align={'center'} gap={8}>
@@ -146,7 +205,7 @@ export default function HomeLayout({
                                         className="!text-white hover:!bg-white/10"
                                         onClick={handleLogout}
                                     >
-                                        Log out
+                                        Гарах
                                     </Button>
                                 </Flex>
                             ) : (
@@ -168,44 +227,31 @@ export default function HomeLayout({
                     </Flex>
                 </Layout.Header>
                 <Layout.Content>{children}</Layout.Content>
-                <Layout.Footer>
+                <Layout.Footer className="!border-t !border-[#404040] !bg-[#121212] !text-white md:!px-8 lg:!px-16">
                     <Row gutter={[16, 16]}>
-                        <Col span={6}>
+                        <Col span={12}>
                             <Typography.Title className="!mb-0 !tracking-wider whitespace-nowrap !text-[#E50914]">
                                 ERDEFLIX
                             </Typography.Title>
                             <p className={'mt-6'}>
-                                The world's most immersive streaming experience.
-                                Dramatic, premium, and designed for film lovers
-                                who demand perfection in every frame.
+                                Үнэгүй кино үзэх боломжтой онлайн веб сайт.
+                                Энэхүү сайт нь хүмүүст өндөр чанартай кино,
+                                цуврал, баримтат кино болон бусад видео
+                                контентыг үнэгүй үзэх боломжийг олгоно.
                             </p>
                         </Col>
-                        <Col span={6}>
+
+                        <Col span={12}>
                             <Typography.Title
                                 level={3}
                                 className="!mb-0 !tracking-wider whitespace-nowrap"
                             >
-                                Platform
+                                Холбоо барих
                             </Typography.Title>
-                            <p></p>
-                        </Col>
-                        <Col span={6}>
-                            <Typography.Title
-                                level={3}
-                                className="!mb-0 !tracking-wider whitespace-nowrap"
-                            >
-                                Support
-                            </Typography.Title>
-                            <p></p>
-                        </Col>
-                        <Col span={6}>
-                            <Typography.Title
-                                level={3}
-                                className="!mb-0 !tracking-wider whitespace-nowrap"
-                            >
-                                Connect
-                            </Typography.Title>
-                            <p></p>
+                            <p className="mt-6">
+                                Утасны дугаар: +976 90322690 <br />
+                                И-мэйл: info@erdeflix.mn
+                            </p>
                         </Col>
                     </Row>
                 </Layout.Footer>

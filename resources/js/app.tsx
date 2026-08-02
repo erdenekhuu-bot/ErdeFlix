@@ -6,6 +6,7 @@ import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import CustomerLayout from '@/layouts/customer-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import QueryClientProviderWrapper from '@/layouts/QueryClient';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -32,10 +33,12 @@ createInertiaApp({
     strictMode: true,
     withApp(app) {
         return (
-            <TooltipProvider delayDuration={0}>
-                {app}
-                <Toaster />
-            </TooltipProvider>
+            <QueryClientProviderWrapper>
+                <TooltipProvider delayDuration={0}>
+                    {app}
+                    <Toaster />
+                </TooltipProvider>
+            </QueryClientProviderWrapper>
         );
     },
     progress: {

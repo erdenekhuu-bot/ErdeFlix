@@ -14,7 +14,8 @@ import {
     RightOutlined,
     HeartOutlined,
 } from '@ant-design/icons';
-import { player } from '@/routes';
+import { player, append } from '@/routes';
+import axios from 'axios';
 
 const { Title, Paragraph } = Typography;
 
@@ -137,14 +138,16 @@ export default function Welcome() {
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
-                            <Button
-                                type="link"
-                                className="!text-white/70 hover:!text-white"
-                                icon={<RightOutlined />}
-                                iconPosition="end"
-                            >
-                                Бүгдийг үзэх
-                            </Button>
+                            <Link href={append()}>
+                                <Button
+                                    type="link"
+                                    className="!text-white/70 hover:!text-white"
+                                    icon={<RightOutlined />}
+                                    iconPosition="end"
+                                >
+                                    Бүгдийг үзэх
+                                </Button>
+                            </Link>
                         </div>
                     </div>
 
@@ -372,21 +375,23 @@ export default function Welcome() {
                                 </Title>
                             </div>
                         </div>
-                        <Button
-                            type="link"
-                            className="!text-white/70 hover:!text-white"
-                            icon={<RightOutlined />}
-                            iconPosition="end"
-                        >
-                            Бүгдийг үзэх
-                        </Button>
+                        <Link href={append()}>
+                            <Button
+                                type="link"
+                                className="!text-white/70 hover:!text-white"
+                                icon={<RightOutlined />}
+                                iconPosition="end"
+                            >
+                                Бүгдийг үзэх
+                            </Button>
+                        </Link>
                     </div>
 
                     <Row gutter={[16, 16]}>
                         {topRated?.map((item: any, index: number) => (
                             <Col xs={12} sm={8} md={6} lg={4} key={index}>
                                 <div className="group relative overflow-hidden rounded-2xl">
-                                    <div className="relative h-48 overflow-hidden">
+                                    <div className="relative h-68 overflow-hidden">
                                         <Image
                                             preview={false}
                                             src={item.poster}

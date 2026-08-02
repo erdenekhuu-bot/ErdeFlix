@@ -11,4 +11,4 @@ Route::get('/user', function (Request $request) {
 // Route::post('/test',function(Request $request){
 //     return json_encode($request->all());
 // });
-Route::post('/test',[ReactionController::class,'comment']);
+Route::get('/filtermovies',[ReactionController::class,'comment']);
