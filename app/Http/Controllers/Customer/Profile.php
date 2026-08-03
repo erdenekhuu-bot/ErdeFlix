@@ -11,10 +11,9 @@ use Inertia\Response;
 
 class Profile extends Controller
 {
-    public function index():Response
+    public function index(Request $request):Response
     {
         $user = Auth::user();
-
         return Inertia::render('profiles', [
             'user' => $user,
         ]);

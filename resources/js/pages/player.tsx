@@ -9,8 +9,6 @@ import {
     PauseOutlined,
     ForwardOutlined,
     BackwardOutlined,
-    SendOutlined,
-    SmileOutlined,
 } from '@ant-design/icons';
 import {
     Flex,
@@ -41,11 +39,11 @@ export default function Player({ hlsUrl }: DemoProps) {
     const [progress, setProgress] = useState(0);
     const [currentTime, setCurrentTime] = useState('0:00:00');
     const [duration, setDuration] = useState('0:00:00');
-    const [comment, setComment] = useState('');
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const hlsRef = useRef<Hls | null>(null);
     const [error, setError] = useState<string | null>(null);
     const { detail, list } = usePage<{ detail: any; list: any }>().props;
+    const [message, setMessage] = useState('');
 
     useEffect(() => {
         const video = videoRef.current;
@@ -165,6 +163,16 @@ export default function Player({ hlsUrl }: DemoProps) {
             user: 'NeonDreamer',
             message: 'I love this movie!',
             time: '18 min ago',
+        },
+        {
+            user: 'NeonDreamer2',
+            message: 'I love this movie!',
+            time: '11 min ago',
+        },
+        {
+            user: 'Neonreamer',
+            message: 'I love this movie!',
+            time: '22 min ago',
         },
     ];
 
@@ -392,17 +400,21 @@ export default function Player({ hlsUrl }: DemoProps) {
                                     >
                                         💭 Сэтгэгдэл үлдээх хэсэг
                                     </Title>
-                                    <Text className="text-xs text-white/40">
-                                        1,234 viewers chatting
-                                    </Text>
                                 </div>
-                                <Badge
-                                    count="123"
-                                    style={{ backgroundColor: '#E50914' }}
-                                />
                             </Flex>
 
-                            <div className="custom-scrollbar mb-4 max-h-[120px] space-y-2 overflow-y-auto">
+                            <div className="custom-scrollbar mb-4 h-[240px] space-y-2 overflow-y-auto">
+                                <div>
+                                    <Input.TextArea
+                                        onChange={(e) =>
+                                            setMessage(e.target.value)
+                                        }
+                                        showCount
+                                        maxLength={300}
+                                        className="!placeholder:text-white/40 !mt-4 !bg-black/50 !text-white"
+                                    />
+                                    <Button className="!mt-2">Хадгалах</Button>
+                                </div>
                                 {chatMessages.map((msg, index) => (
                                     <div
                                         key={index}
@@ -429,45 +441,6 @@ export default function Player({ hlsUrl }: DemoProps) {
                                         </Text>
                                     </div>
                                 ))}
-                            </div>
-
-                            <div className="flex gap-2">
-                                <Input
-                                    placeholder="Type a message..."
-                                    value={comment}
-                                    onChange={(e) => setComment(e.target.value)}
-                                    className="flex-1 !border-white/20 !bg-white/10 !text-white placeholder:text-white/40"
-                                    prefix={
-                                        <SmileOutlined className="text-white/40" />
-                                    }
-                                    onPressEnter={() => {
-                                        if (comment.trim()) {
-                                            chatMessages.push({
-                                                user: 'You',
-                                                message: comment,
-                                                time: 'Just now',
-                                            });
-                                            setComment('');
-                                        }
-                                    }}
-                                />
-                                <Button
-                                    type="primary"
-                                    icon={<SendOutlined />}
-                                    className="!bg-[#E50914] hover:!bg-[#f6121d]"
-                                    onClick={() => {
-                                        if (comment.trim()) {
-                                            chatMessages.push({
-                                                user: 'You',
-                                                message: comment,
-                                                time: 'Just now',
-                                            });
-                                            setComment('');
-                                        }
-                                    }}
-                                >
-                                    Send
-                                </Button>
                             </div>
                         </div>
                     </div>

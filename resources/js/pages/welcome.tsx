@@ -15,7 +15,6 @@ import {
     HeartOutlined,
 } from '@ant-design/icons';
 import { player, append } from '@/routes';
-import axios from 'axios';
 
 const { Title, Paragraph } = Typography;
 

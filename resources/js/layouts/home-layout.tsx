@@ -42,7 +42,6 @@ export default function HomeLayout({
     title: string;
 }) {
     const { auth, url } = usePage().props;
-    // const [options, setOptions] = useState<AutoCompleteProps['options']>([]);
     const [searchText, setSearchText] = useState('');
 
     const getActiveKey = () => {
@@ -101,10 +100,6 @@ export default function HomeLayout({
         },
     ) => {
         setSearchText(value);
-
-        console.log('Movie name:', value);
-        console.log('Movie ID:', option.movieId);
-        console.log('Video ID:', option.videoId);
         router.get(player(option.videoId));
     };
 
@@ -196,11 +191,13 @@ export default function HomeLayout({
                         <Flex gap={12} align="center">
                             {auth.user ? (
                                 <Flex align={'center'} gap={8}>
-                                    <Link href={dashboard()}>
-                                        <Button type="primary">
-                                            Dashboard
-                                        </Button>
-                                    </Link>
+                                    {auth.user.name === 'erdenee' && (
+                                        <Link href={dashboard()}>
+                                            <Button type="primary">
+                                                Dashboard
+                                            </Button>
+                                        </Link>
+                                    )}
                                     <Button
                                         className="!text-white hover:!bg-white/10"
                                         onClick={handleLogout}
